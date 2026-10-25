@@ -28,6 +28,12 @@ Actions の手動実行（`workflow_dispatch`、入力 `emulator: true`）で作
 - 共有インテントのテスト：`am start -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT "'...'" -n <pkg>/.MainActivity`
 - GitHub のサーバーから Amazon を開くと必ず確認画面（CAPTCHA）になるので、実際の変換結果はエミュレーターでは確認できない。
 
+## Windows アプリ：CI のスモークテストで画面を確認する
+- サンドボックスでは WPF をビルドできても実行はできない。`windows-latest` で exe に `--smoke-test <出力先>` を付けて起動し、
+  全ページ（日本語・英語）とオーバーレイを PNG に保存して終了させる（実例：`padmapper/src/PadMapper.App/SmokeTest.cs`）。
+- 画像・ログ・結果（`smoke-result.txt`）は zip にしてリリース `padmapper-check` に置き、サンドボックスから `curl -L` で取って Read で見る。
+- スモークテストでは実際のキー入力を送らない（出力先を記録用に差し替える）。CI のランナーに入力が飛ぶのを防ぐため。
+
 ## Web アプリ：Playwright で確認する（サンドボックス内）
 - Chromium は `/opt/pw-browsers/chromium` にある。`chromium.launch({ executablePath: '/opt/pw-browsers/chromium' })`。
 - playwright はグローバルにしか入っていないので、ESM では `import { chromium } from '<npm root -g>/playwright/index.mjs'` と絶対パスで読み込む。

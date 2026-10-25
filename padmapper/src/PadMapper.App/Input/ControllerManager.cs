@@ -188,7 +188,8 @@ internal sealed class ControllerManager : IControllerSource
                 }
                 if (!_parsers.TryGetValue(d.Path, out var existing) || existing.Definition != def)
                     _parsers[d.Path] = new DeviceParser(def);
-                if (d.UsagePage != 0) toRegister.Add((d.UsagePage, d.Usage));
+                // キーボード・マウスのコレクションは登録しない（全てのマウス移動で起こされてしまうため）
+                if (d.UsagePage != 0 && d.IsCandidate) toRegister.Add((d.UsagePage, d.Usage));
             }
 
             if (_activePath != null && !_parsers.ContainsKey(_activePath)) _activePath = null;
