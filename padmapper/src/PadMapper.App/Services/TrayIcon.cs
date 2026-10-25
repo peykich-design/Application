@@ -6,8 +6,8 @@ namespace PadMapper.App.Services;
 internal sealed class TrayIcon : IDisposable
 {
     private readonly NotifyIcon _icon;
-    private readonly System.Drawing.Icon _normal = IconFactory.Create(false);
-    private readonly System.Drawing.Icon _paused = IconFactory.Create(true);
+    private readonly System.Drawing.Icon _normal = IconFactory.AppIcon(SystemInformation.SmallIconSize.Width);
+    private readonly System.Drawing.Icon _paused = IconFactory.Create(true, SystemInformation.SmallIconSize.Width);
     private readonly AppHost _host;
 
     public TrayIcon(AppHost host)

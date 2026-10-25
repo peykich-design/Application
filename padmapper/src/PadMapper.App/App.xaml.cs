@@ -96,6 +96,12 @@ public partial class App : Application
         bool autostart = args.Contains(TaskXmlBuilder.AutostartArgument);
         bool show = smoke || !autostart || ConsumeFlag(Path.Combine(baseDir, ShowFlagFile));
         if (show) window.Show();
+        else if (_host.Settings.CloseAction == "taskbar")
+        {
+            // 自動起動でも、タスクバーには最小化して出しておく
+            window.WindowState = WindowState.Minimized;
+            window.Show();
+        }
         _instance?.ListenForShowRequests(() => Dispatcher.BeginInvoke(() => _host.ShowMainWindow()));
 
         if (smoke) _ = SmokeTest.RunAsync(window, _host, smokeDir!, _log);

@@ -21,6 +21,12 @@ public sealed class AppSettings
     public bool SendInitCommand { get; set; }
     /// <summary>一時停止（緊急停止）のホットキー。例 "Ctrl+Alt+Shift+F12"。</summary>
     public string PauseHotkey { get; set; } = "Ctrl+Alt+Shift+F12";
+    /// <summary>
+    /// ウィンドウの閉じるボタンの動作。"tray"：トレイにしまう（タスクバーから消える）。"taskbar"：タスクバーに最小化する。
+    /// "taskbar" のときは、ログオン時の自動起動でも最小化した状態でタスクバーに出す。
+    /// </summary>
+    public string CloseAction { get; set; } = "tray";
+
     /// <summary>"system" / "light" / "dark"。</summary>
     public string Theme { get; set; } = "system";
 }

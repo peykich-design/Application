@@ -400,4 +400,9 @@
     <sys:String x:Key="Preset_Mute" xml:space="preserve">ミュート</sys:String>
     <sys:String x:Key="Profiles_ScrollMinSpeed" xml:space="preserve">スクロール：少し倒したときの速さ（ノッチ/秒）</sys:String>
     <sys:String x:Key="Profiles_SmoothScroll" xml:space="preserve">なめらかスクロール</sys:String>
+    <sys:String x:Key="Settings_CloseAction" xml:space="preserve">閉じるボタンを押したとき</sys:String>
+    <sys:String x:Key="Close_Tray" xml:space="preserve">トレイにしまう（タスクバーから消える）</sys:String>
+    <sys:String x:Key="Close_Taskbar" xml:space="preserve">タスクバーに最小化する（アイコンを残す）</sys:String>
+    <sys:String x:Key="Settings_TrayHint" xml:space="preserve">どちらでも動作は続きます。終了はトレイのアイコンを右クリック →「終了」。Windows 11 では、トレイのアイコンが「∧」の中に隠れることがあります。タスクバーに常に出すには、下のボタンで「タスクバー」の設定を開き、「その他のシステム トレイ アイコン」で PadMapper をオンにしてください。</sys:String>
+    <sys:String x:Key="Settings_OpenTaskbarSettings" xml:space="preserve">タスクバーの設定を開く</sys:String>
 </ResourceDictionary>

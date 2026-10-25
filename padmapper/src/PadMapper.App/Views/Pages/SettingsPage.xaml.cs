@@ -35,6 +35,16 @@ public partial class SettingsPage : Page
             Host.MainWindow?.ApplyTheme(v);
             Host.SaveSettings();
         }));
+        GeneralPanel.Children.Add(Form.Combo("Settings_CloseAction",
+            new[] { ("Close_Tray", "tray"), ("Close_Taskbar", "taskbar") }, s.CloseAction, v => { s.CloseAction = v; Host.SaveSettings(); }));
+        GeneralPanel.Children.Add(Form.Label("Settings_TrayHint", hint: true));
+        var trayButton = new Button { Margin = new Thickness(0, 4, 0, 8), HorizontalAlignment = HorizontalAlignment.Left };
+        trayButton.SetResourceReference(ContentProperty, "Settings_OpenTaskbarSettings");
+        trayButton.Click += (_, _) =>
+        {
+            try { Process.Start(new ProcessStartInfo("ms-settings:taskbar") { UseShellExecute = true }); } catch { }
+        };
+        GeneralPanel.Children.Add(trayButton);
         GeneralPanel.Children.Add(Form.Check("Settings_UiNav", s.ControllerUiNavigation, v => { s.ControllerUiNavigation = v; Host.SaveSettings(); }));
         GeneralPanel.Children.Add(Form.Check("Settings_LogTitles", s.LogWindowTitles, v => { s.LogWindowTitles = v; Host.SaveSettings(); }));
         GeneralPanel.Children.Add(Form.Combo("Settings_InputMethod",

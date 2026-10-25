@@ -400,4 +400,9 @@
     <sys:String x:Key="Preset_Mute" xml:space="preserve">Mute</sys:String>
     <sys:String x:Key="Profiles_ScrollMinSpeed" xml:space="preserve">Scroll: speed at slight tilt (notches/s)</sys:String>
     <sys:String x:Key="Profiles_SmoothScroll" xml:space="preserve">Smooth scrolling</sys:String>
+    <sys:String x:Key="Settings_CloseAction" xml:space="preserve">When the close button is pressed</sys:String>
+    <sys:String x:Key="Close_Tray" xml:space="preserve">Hide to the tray (removed from the taskbar)</sys:String>
+    <sys:String x:Key="Close_Taskbar" xml:space="preserve">Minimize to the taskbar (keep the icon)</sys:String>
+    <sys:String x:Key="Settings_TrayHint" xml:space="preserve">PadMapper keeps running either way. To exit, right-click the tray icon → Exit. Windows 11 may hide the tray icon under the ^ arrow. To always show it, open the taskbar settings below and turn on PadMapper under 'Other system tray icons'.</sys:String>
+    <sys:String x:Key="Settings_OpenTaskbarSettings" xml:space="preserve">Open taskbar settings</sys:String>
 </ResourceDictionary>

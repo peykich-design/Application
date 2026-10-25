@@ -6,11 +6,45 @@ using System.Windows.Media.Imaging;
 
 namespace PadMapper.App.Services;
 
-/// <summary>トレイとウィンドウのアイコンをコードで描く（画像ファイルを持たないため）。</summary>
+/// <summary>アイコン。基本は Resources/PadMapper.ico を使い、一時停止中のトレイ用（灰色）はコードで描く。</summary>
 internal static class IconFactory
 {
     [DllImport("user32.dll")]
     private static extern bool DestroyIcon(IntPtr handle);
+
+    private static readonly Uri IconUri = new("pack://application:,,,/PadMapper;component/Resources/PadMapper.ico", UriKind.Absolute);
+
+    /// <summary>アプリのアイコン（Resources/PadMapper.ico）。読めなければコードで描いたもの。</summary>
+    public static Icon AppIcon(int size)
+    {
+        try
+        {
+            var info = System.Windows.Application.GetResourceStream(IconUri);
+            if (info != null)
+                using (info.Stream)
+                    return new Icon(info.Stream, size, size);
+        }
+        catch
+        {
+            // 下で描く
+        }
+        return Create(false, size);
+    }
+
+    /// <summary>ウィンドウ用（タスクバーのボタン・タイトルバー）。サイズは Windows が選ぶ。</summary>
+    public static BitmapSource WindowIcon()
+    {
+        try
+        {
+            var frame = BitmapFrame.Create(IconUri);
+            frame.Freeze();
+            return frame;
+        }
+        catch
+        {
+            return CreateImage();
+        }
+    }
 
     /// <summary>コントローラーの形のアイコン。paused なら灰色。</summary>
     public static Icon Create(bool paused, int size = 32)

@@ -15,7 +15,7 @@ public partial class MainWindow : FluentWindow
     public MainWindow()
     {
         InitializeComponent();
-        Icon = IconFactory.CreateImage();
+        Icon = IconFactory.WindowIcon();
         RootNavigation.SetPageProviderService(_pages);
         Loaded += (_, _) =>
         {
@@ -44,13 +44,15 @@ public partial class MainWindow : FluentWindow
         }
     }
 
-    /// <summary>閉じるボタンではトレイに隠れるだけ（終了はトレイのメニューから）。</summary>
+    /// <summary>閉じるボタンでは終了しない（終了はトレイのメニューから）。</summary>
     protected override void OnClosing(CancelEventArgs e)
     {
         if (!AppHost.Current.SmokeTest && Application.Current.ShutdownMode == ShutdownMode.OnExplicitShutdown)
         {
             e.Cancel = true;
-            Hide();
+            // 設定により、トレイにしまう（タスクバーから消える）か、タスクバーに最小化する
+            if (AppHost.Current.Settings.CloseAction == "taskbar") WindowState = WindowState.Minimized;
+            else Hide();
             return;
         }
         base.OnClosing(e);

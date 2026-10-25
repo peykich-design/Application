@@ -10,6 +10,8 @@
     <AssemblyName>PadMapper</AssemblyName>
     <RootNamespace>PadMapper.App</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- exe・タスクバー・Alt+Tab に出るアイコン -->
+    <ApplicationIcon>Resources\PadMapper.ico</ApplicationIcon>
     <!-- WinForms と WPF の両方の暗黙 using がぶつからないように -->
     <ImplicitUsings>disable</ImplicitUsings>
     <NoWarn>$(NoWarn);WFAC010</NoWarn>
@@ -21,6 +23,9 @@
     <Using Include="System.Linq" />
     <Using Include="System.Threading" />
     <Using Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PadMapper.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="WPF-UI" Version="4.0.3" />
