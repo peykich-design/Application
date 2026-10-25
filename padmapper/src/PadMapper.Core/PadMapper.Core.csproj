@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- OS に依存しないロジック（入力判定・ジャイロ計算・プロファイル・設定）。Linux でも単体テストできる。 -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>PadMapper.Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="PadMapper.Core.Tests" />
+  </ItemGroup>
+</Project>
