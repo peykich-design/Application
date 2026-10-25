@@ -11,6 +11,12 @@ public sealed class DeviceParser
     private readonly int _minLength;
 
     public DeviceDefinition Definition => _def;
+    public bool IsHid => _def.IsHid;
+
+    /// <summary>この定義が値を持つ軸（複数のコレクションの状態を合成するときに使う）。</summary>
+    public bool ProvidesAxis(string axis) => _def.Axes.Any(a => a.Axis.Equals(axis, StringComparison.OrdinalIgnoreCase));
+    public bool ProvidesGyro => _def.Gyro.Count > 0;
+    public bool ProvidesAccel => _def.Accel.Count > 0;
 
     public DeviceParser(DeviceDefinition def)
     {
@@ -36,7 +42,7 @@ public sealed class DeviceParser
     /// <summary>このレポートを解析できれば true を返し、state を上書きする。</summary>
     public bool TryParse(ReadOnlySpan<byte> report, ControllerState state)
     {
-        if (report.Length < _minLength) return false;
+        if (_def.IsHid || report.Length < _minLength) return false;
         if (_def.ReportId is int rid && report[0] != rid) return false;
         foreach (var sig in _def.Signature)
             if (sig.Offset >= report.Length || report[sig.Offset] != sig.Value) return false;
@@ -73,6 +79,34 @@ public sealed class DeviceParser
         {
             state.HasAccel = true;
             state.Accel = ReadVector(report, _def.Accel);
+        }
+        return true;
+    }
+
+    /// <summary>HID 解析済みの値から状態を作る（Kind = "hid" の定義用）。</summary>
+    public bool TryParseHid(HidSnapshot snap, ControllerState state)
+    {
+        var buttons = InputSet.Empty;
+        foreach (var b in _def.Buttons)
+        {
+            if (!LogicalInputs.TryParse(b.Input, out var li)) continue;
+            bool pressed = b.HidButton is int n ? snap.Buttons.Contains(n)
+                : b.HidHat != null && HidSnapshot.HatHas(snap.Hat, b.HidHat);
+            if (pressed) buttons = buttons.With(li);
+        }
+        state.Buttons = buttons;
+        foreach (var a in _def.Axes)
+        {
+            if (a.HidUsage is not int u || !snap.Values.TryGetValue(u, out var raw)) continue;
+            switch (a.Axis.ToUpperInvariant())
+            {
+                case "LX": state.LX = Stick(raw, a); break;
+                case "LY": state.LY = Stick(raw, a); break;
+                case "RX": state.RX = Stick(raw, a); break;
+                case "RY": state.RY = Stick(raw, a); break;
+                case "LT": state.LT = Trigger(raw, a); break;
+                case "RT": state.RT = Trigger(raw, a); break;
+            }
         }
         return true;
     }

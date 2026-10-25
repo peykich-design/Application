@@ -85,6 +85,7 @@ public partial class App : Application
         }
 
         // 4. 本体
+        WheelForwarding.Register();
         var store = new ProfileStore(baseDir, _log);
         _host = new AppHost(_log, store, smoke);
         Loc.Apply(_host.Settings.Language);

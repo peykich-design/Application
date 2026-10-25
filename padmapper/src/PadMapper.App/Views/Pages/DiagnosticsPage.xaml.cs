@@ -132,8 +132,9 @@ public partial class DiagnosticsPage : Page
         _status["Diag_Elevation"].Text = StartupTask.IsElevated ? Loc.T("Home_Elevated") : Loc.T("Home_NotElevated");
         _status["Diag_Task"].Text = _taskStateText ?? "…";
         _status["Diag_Method"].Text = $"{Host.Settings.InputMethod} / {c.ActiveMethod}";
-        var dev = c.ActiveDevice;
-        _status["Diag_Device"].Text = dev == null ? Loc.T("Home_NotConnected") : $"{dev.Product} ({dev.VidPid}, {dev.UsageText}, {dev.Connection})";
+        var active = c.ActiveCollections;
+        _status["Diag_Device"].Text = active.Count == 0 ? Loc.T("Home_NotConnected")
+            : string.Join("\n", active.Select(a => $"{a.device.Product} ({a.device.VidPid}, {a.device.UsageText}, {a.device.Connection})"));
         var def = c.ActiveDefinition;
         _status["Diag_Definition"].Text = def == null ? "-"
             : $"{def.Name} — {(def.Source == "learned" ? Loc.T("Diag_SourceLearned") : Loc.T("Diag_SourceBuiltin"))}{(def.Verified ? "" : " / " + Loc.T("Diag_Unverified"))}";
@@ -205,8 +206,7 @@ public partial class DiagnosticsPage : Page
         _received = _lastReceived = 0;
         _latest = _shown = null;
         _history.Clear();
-        Host.Controllers.DiagnosticPath = _device.Path;
-        Host.Controllers.EnsureRegistered(_device);
+        Host.Controllers.AddDiagnostic(_device);
         if (DirectCheck.IsChecked == true) _directReader = Host.Controllers.OpenDiagnosticReader(_device);
         DumpButton.Content = Loc.T("Diag_StopDump");
         UpdateWizardButtons();
@@ -215,7 +215,7 @@ public partial class DiagnosticsPage : Page
     private void StopDump()
     {
         _dumping = false;
-        Host.Controllers.DiagnosticPath = null;
+        if (_device != null) Host.Controllers.RemoveDiagnostic(_device.Path);
         _directReader?.Dispose();
         _directReader = null;
         DumpButton.Content = Loc.T("Diag_StartDump");
@@ -491,6 +491,37 @@ public partial class DiagnosticsPage : Page
         if (_device != null) _def = NewDefinition(_device);
         ShowDefinition();
         RefreshDevices();
+    }
+
+    /// <summary>不具合の報告用に、デバイス一覧・使用中の定義・直近のレポートをテキストにしてコピーする。</summary>
+    private void OnCopyReport(object sender, RoutedEventArgs e)
+    {
+        var c = Host.Controllers;
+        var sb = new StringBuilder();
+        sb.AppendLine($"PadMapper {typeof(DiagnosticsPage).Assembly.GetName().Version} / {Environment.OSVersion} / admin={StartupTask.IsElevated} / method={Host.Settings.InputMethod}");
+        sb.AppendLine($"connected={c.IsConnected} reports={c.ReportCount} needsSetup={c.NeedsSetup}");
+        sb.AppendLine();
+        foreach (var d in c.Devices.Where(d => d.IsCandidate).OrderBy(d => d.VidPid))
+        {
+            var def = c.FindDefinition(d);
+            sb.AppendLine($"- {d.Product} | {d.Manufacturer} | {d.VidPid} | usage {d.UsageText} | {d.Connection} | in={d.InputReportLength} out={d.OutputReportLength} | def={def?.Name ?? "-"} ({def?.Source})");
+            if (c.LastReport(d.Path) is { } r)
+                sb.AppendLine($"  last ({(c.NowMs - r.time) / 1000:0.0}s ago): {ReportDiff.ToHex(r.data)}");
+            else
+                sb.AppendLine("  last: (no report)");
+            sb.AppendLine($"  {d.Path}");
+        }
+        sb.AppendLine();
+        foreach (var p in Host.Log.RecentProblems) sb.AppendLine($"{p.Time:HH:mm:ss} {p.Level}: {p.Message}");
+        try
+        {
+            Clipboard.SetText(sb.ToString());
+            System.Windows.MessageBox.Show(Loc.T("Diag_ReportCopied"), "PadMapper");
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(ex.Message, "PadMapper");
+        }
     }
 
     private void OnOpenLogs(object sender, RoutedEventArgs e) => OpenFolder(Host.Log.Directory);

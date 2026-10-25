@@ -28,7 +28,7 @@ internal static class SmokeTest
             await Task.Delay(1500);
             var pages = new (Type type, string name)[]
             {
-                (typeof(HomePage), "home"), (typeof(ProfilesPage), "profiles"), (typeof(GyroPage), "gyro"),
+                (typeof(HomePage), "home"), (typeof(ControllerSetupPage), "setup"), (typeof(ProfilesPage), "profiles"), (typeof(GyroPage), "gyro"),
                 (typeof(AppsPage), "apps"), (typeof(DiagnosticsPage), "diagnostics"), (typeof(SettingsPage), "settings"),
             };
             foreach (var lang in new[] { "ja", "en" })

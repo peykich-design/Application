@@ -38,9 +38,9 @@ public partial class HomePage : Page
         if (c.IsConnected && dev != null)
         {
             ControllerText.Text = string.IsNullOrEmpty(dev.Product) ? dev.VidPid : dev.Product;
-            var def = c.ActiveDefinition;
+            var defs = string.Join(" + ", c.ActiveCollections.Select(a => a.definition.Name).Distinct());
             var age = c.LastParsedMs is double ms ? (c.NowMs - ms) / 1000.0 : (double?)null;
-            ControllerDetail.Text = Loc.F("Home_ControllerDetail", dev.Connection, def?.Name ?? "-",
+            ControllerDetail.Text = Loc.F("Home_ControllerDetail", dev.Connection, defs,
                 c.ActiveMethod, age == null ? Loc.T("Home_NoReports") : $"{age:0.0}s");
         }
         else
@@ -48,6 +48,10 @@ public partial class HomePage : Page
             ControllerText.Text = Loc.T("Home_NotConnected");
             ControllerDetail.Text = Loc.T("Home_NotConnectedHint");
         }
+
+        bool needsSetup = !c.IsConnected || c.NeedsSetup;
+        SetupCard.Visibility = needsSetup ? Visibility.Visible : Visibility.Collapsed;
+        SetupText.Text = Loc.T(c.IsConnected ? "Home_SetupGeneric" : "Home_SetupNotConnected");
 
         ProfileText.Text = Host.ProfileName(Host.ActiveProfileId);
         var p = Host.FindProfile(Host.ActiveProfileId);
@@ -70,6 +74,8 @@ public partial class HomePage : Page
     private void OnPauseClick(object sender, RoutedEventArgs e) => Host.Engine.SetPaused(PauseSwitch.IsChecked == true);
 
     private void OnGyroClick(object sender, RoutedEventArgs e) => Host.Engine.SetGyroEnabled(GyroSwitch.IsChecked == true);
+
+    private void OnOpenSetup(object sender, RoutedEventArgs e) => Host.MainWindow?.NavigateTo(typeof(ControllerSetupPage));
 
     private void OnOverlayClick(object sender, RoutedEventArgs e) => Host.Overlay?.Toggle();
 }

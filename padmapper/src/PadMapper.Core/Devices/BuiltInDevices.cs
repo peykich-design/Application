@@ -20,10 +20,12 @@ public static class BuiltInDevices
     public static DeviceDefinition Vader4ProV1() => new()
     {
         Id = "builtin-flydigi-v1",
-        Name = "Flydigi Vader 4 Pro（V1 独自レポート・SDL 由来）",
+        Name = "Flydigi Vader 3 Pro / 4 Pro（V1 独自レポート・SDL 由来）",
         Source = "builtin-sdl",
         Verified = false,
-        Match = new DeviceMatch { VendorId = FlydigiVendorV1, ProductId = Vader4ProProductId },
+        // Vader 3 Pro / 4 Pro などの V1 系。PID は接続方法やモードで変わる可能性があるため、
+        // Flydigi の VID のベンダー独自コレクション全てを候補にし、先頭の 04 FE で見分ける。
+        Match = new DeviceMatch { VendorId = FlydigiVendorV1, VendorCollectionOnly = true },
         ReportId = 0x04,
         MinLength = 31,
         Signature = { new ByteValue { Offset = 1, Value = 0xFE } },
@@ -69,5 +71,40 @@ public static class BuiltInDevices
 
     private static ButtonMap B(string input, int offset, int mask) => new() { Input = input, Offset = offset, Mask = mask };
 
-    public static IReadOnlyList<DeviceDefinition> All() => new[] { Vader4ProV1() };
+    public const string GenericSource = "builtin-generic";
+
+    /// <summary>
+    /// 標準の HID ゲームパッド・ジョイスティック（DInput モードのコントローラーなど）の仮の定義。
+    /// ボタン番号の割り当ては機種ごとに違うので、ここでは一般的な並びを仮に当てているだけ。
+    /// 「コントローラー設定」画面で実機に合わせて設定すると、そちらが優先される。
+    /// 右スティックとトリガーは機種によって軸が違い、誤動作（押しっぱなし扱い）を避けるため割り当てない。
+    /// </summary>
+    public static DeviceDefinition GenericGamepad(int usage) => new()
+    {
+        Id = $"builtin-generic-hid-{usage:x2}",
+        Name = "汎用 HID ゲームパッド（仮の配置）",
+        Source = GenericSource,
+        Kind = "hid",
+        Match = new DeviceMatch { UsagePage = 0x01, Usage = usage },
+        Buttons =
+        {
+            H("A", 1), H("B", 2), H("X", 3), H("Y", 4), H("LB", 5), H("RB", 6),
+            H("Back", 7), H("Start", 8), H("L3", 9), H("R3", 10),
+            Hat("DPadUp", "up"), Hat("DPadDown", "down"), Hat("DPadLeft", "left"), Hat("DPadRight", "right"),
+        },
+        Axes =
+        {
+            new AxisMap { Axis = "LX", HidUsage = HidSnapshot.UsageX, Center = 32768, Min = 0, Max = 65535 },
+            new AxisMap { Axis = "LY", HidUsage = HidSnapshot.UsageY, Center = 32768, Min = 0, Max = 65535 },
+        },
+        Notes = "仮の配置。コントローラー設定画面で実機に合わせてください。",
+    };
+
+    private static ButtonMap H(string input, int button) => new() { Input = input, HidButton = button };
+    private static ButtonMap Hat(string input, string dir) => new() { Input = input, HidHat = dir };
+
+    public static bool IsGeneric(DeviceDefinition d) => d.Source == GenericSource;
+
+    /// <summary>組み込み定義。先にあるものほど優先（ベンダー独自 → 汎用）。</summary>
+    public static IReadOnlyList<DeviceDefinition> All() => new[] { Vader4ProV1(), GenericGamepad(0x05), GenericGamepad(0x04) };
 }

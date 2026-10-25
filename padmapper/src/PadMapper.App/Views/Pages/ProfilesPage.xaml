@@ -5,159 +5,157 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:controls="clr-namespace:PadMapper.App.Views.Controls"
     Title="Profiles">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24,8,24,24">
-            <TextBlock Style="{StaticResource PageTitle}" Text="{DynamicResource Nav_Profiles}" />
+    <StackPanel Margin="24,8,24,24">
+        <TextBlock Style="{StaticResource PageTitle}" Text="{DynamicResource Nav_Profiles}" />
 
-            <!-- プロファイルの選択と操作 -->
-            <WrapPanel Margin="0,0,0,8">
-                <ComboBox x:Name="ProfileCombo" MinWidth="220" Margin="0,0,8,8" DisplayMemberPath="Name" SelectionChanged="OnProfileSelected" />
-                <ui:Button Content="{DynamicResource Common_Save}" Click="OnSave" Margin="0,0,8,8" Appearance="Primary" x:Name="SaveButton" />
-                <Button Content="{DynamicResource Common_Revert}" Click="OnRevert" Margin="0,0,8,8" />
-                <Button Content="{DynamicResource Profiles_New}" Click="OnNew" Margin="0,0,8,8" />
-                <Button Content="{DynamicResource Profiles_Duplicate}" Click="OnDuplicate" Margin="0,0,8,8" />
-                <Button Content="{DynamicResource Common_Delete}" Click="OnDelete" Margin="0,0,8,8" />
-                <Button Content="{DynamicResource Profiles_Import}" Click="OnImport" Margin="0,0,8,8" />
-                <Button Content="{DynamicResource Profiles_Export}" Click="OnExport" Margin="0,0,8,8" />
-                <Button Content="{DynamicResource Profiles_UseNow}" Click="OnUseNow" Margin="0,0,8,8" />
-            </WrapPanel>
-            <TextBlock x:Name="DirtyText" Style="{StaticResource Hint}" Margin="0,0,0,8" />
+        <!-- プロファイルの選択と操作 -->
+        <WrapPanel Margin="0,0,0,8">
+            <ComboBox x:Name="ProfileCombo" MinWidth="220" Margin="0,0,8,8" DisplayMemberPath="Name" SelectionChanged="OnProfileSelected" />
+            <ui:Button Content="{DynamicResource Common_Save}" Click="OnSave" Margin="0,0,8,8" Appearance="Primary" x:Name="SaveButton" />
+            <Button Content="{DynamicResource Common_Revert}" Click="OnRevert" Margin="0,0,8,8" />
+            <Button Content="{DynamicResource Profiles_New}" Click="OnNew" Margin="0,0,8,8" />
+            <Button Content="{DynamicResource Profiles_Duplicate}" Click="OnDuplicate" Margin="0,0,8,8" />
+            <Button Content="{DynamicResource Common_Delete}" Click="OnDelete" Margin="0,0,8,8" />
+            <Button Content="{DynamicResource Profiles_Import}" Click="OnImport" Margin="0,0,8,8" />
+            <Button Content="{DynamicResource Profiles_Export}" Click="OnExport" Margin="0,0,8,8" />
+            <Button Content="{DynamicResource Profiles_UseNow}" Click="OnUseNow" Margin="0,0,8,8" />
+        </WrapPanel>
+        <TextBlock x:Name="DirtyText" Style="{StaticResource Hint}" Margin="0,0,0,8" />
 
-            <Border Style="{StaticResource Card}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="220" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Profiles_Name}" Margin="0,0,8,0" />
-                    <TextBox x:Name="NameBox" Grid.Column="1" TextChanged="OnNameChanged" Margin="0,0,16,0" />
-                    <TextBlock Grid.Column="2" Style="{StaticResource Label}" Text="{DynamicResource Profiles_Type}" Margin="0,0,8,0" />
-                    <ComboBox x:Name="TypeCombo" Grid.Column="3" SelectionChanged="OnTypeChanged">
-                        <ComboBoxItem Content="{DynamicResource Type_Desktop}" />
-                        <ComboBoxItem Content="{DynamicResource Type_Game}" />
-                    </ComboBox>
-                </Grid>
-            </Border>
-            <TextBlock x:Name="TypeHint" Style="{StaticResource Hint}" Margin="4,0,0,8" />
-
-            <ItemsControl x:Name="IssueList" Margin="0,0,0,8">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Style="{StaticResource Label}" Text="{Binding}" Margin="4,1" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-            <!-- コントローラー図と割り当て -->
+        <Border Style="{StaticResource Card}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="2*" MinWidth="320" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="220" />
                 </Grid.ColumnDefinitions>
-                <Border Style="{StaticResource Card}" Margin="0,0,8,8">
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_DiagramHint}" Margin="0,0,0,6" />
-                        <controls:ControllerDiagram x:Name="Diagram" />
-                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                            <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Profiles_OtherInputs}" Margin="0,0,8,0" />
-                            <ComboBox x:Name="InputCombo" MinWidth="160" SelectionChanged="OnInputComboChanged" />
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="1" Style="{StaticResource Card}" Margin="0,0,0,8">
-                    <StackPanel>
-                        <TextBlock x:Name="SelectedInputText" Style="{StaticResource SectionTitle}" Margin="0,0,0,6" />
-                        <ListBox x:Name="BindingList" MinHeight="60" MaxHeight="180" SelectionChanged="OnBindingSelected" />
-                        <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
-                            <Button Content="{DynamicResource Profiles_AddBinding}" Click="OnAddBinding" Margin="0,0,8,0" />
-                            <Button Content="{DynamicResource Profiles_RemoveBinding}" Click="OnRemoveBinding" />
-                        </StackPanel>
-
-                        <StackPanel x:Name="EditorPanel">
-                            <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_Trigger}" />
-                            <ComboBox x:Name="TriggerCombo" SelectionChanged="OnEditorChanged" Margin="0,2,0,6" />
-                            <StackPanel x:Name="HoldPanel">
-                                <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_HoldMs}" />
-                                <TextBox x:Name="HoldBox" TextChanged="OnEditorChanged" Margin="0,2,0,6" />
-                            </StackPanel>
-                            <StackPanel x:Name="DoublePanel">
-                                <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_DoubleMs}" />
-                                <TextBox x:Name="DoubleBox" TextChanged="OnEditorChanged" Margin="0,2,0,6" />
-                            </StackPanel>
-                            <StackPanel x:Name="ChordPanel">
-                                <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_Chord}" />
-                                <TextBox x:Name="ChordBox" TextChanged="OnEditorChanged" Margin="0,2,0,6" />
-                            </StackPanel>
-                            <StackPanel x:Name="LayerPanel">
-                                <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_Layer}" />
-                                <TextBox x:Name="LayerBox" TextChanged="OnEditorChanged" Margin="0,2,0,6" />
-                            </StackPanel>
-
-                            <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_Action}" />
-                            <ComboBox x:Name="ActionCombo" SelectionChanged="OnEditorChanged" Margin="0,2,0,6" />
-
-                            <StackPanel x:Name="KeyPanel">
-                                <ComboBox x:Name="KeyCombo" IsEditable="True" Margin="0,0,0,4" SelectionChanged="OnEditorChanged" LostFocus="OnEditorChanged" />
-                                <WrapPanel>
-                                    <CheckBox x:Name="ModCtrl" Content="Ctrl" Click="OnEditorChanged" Margin="0,0,8,0" />
-                                    <CheckBox x:Name="ModShift" Content="Shift" Click="OnEditorChanged" Margin="0,0,8,0" />
-                                    <CheckBox x:Name="ModAlt" Content="Alt" Click="OnEditorChanged" Margin="0,0,8,0" />
-                                    <CheckBox x:Name="ModWin" Content="Win" Click="OnEditorChanged" />
-                                </WrapPanel>
-                            </StackPanel>
-                            <ComboBox x:Name="MouseCombo" SelectionChanged="OnEditorChanged" Margin="0,0,0,6" />
-                            <StackPanel x:Name="ScrollPanel" Orientation="Horizontal" Margin="0,0,0,6">
-                                <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Profiles_ScrollAmount}" Margin="0,0,8,0" />
-                                <TextBox x:Name="ScrollBox" Width="80" TextChanged="OnEditorChanged" Margin="0,0,8,0" />
-                                <CheckBox x:Name="HorizontalCheck" Content="{DynamicResource Profiles_Horizontal}" Click="OnEditorChanged" />
-                            </StackPanel>
-                            <StackPanel x:Name="MovePanel" Orientation="Horizontal" Margin="0,0,0,6">
-                                <TextBlock Style="{StaticResource Label}" Text="X" Margin="0,0,4,0" />
-                                <TextBox x:Name="DxBox" Width="70" TextChanged="OnEditorChanged" Margin="0,0,8,0" />
-                                <TextBlock Style="{StaticResource Label}" Text="Y" Margin="0,0,4,0" />
-                                <TextBox x:Name="DyBox" Width="70" TextChanged="OnEditorChanged" />
-                            </StackPanel>
-                            <StackPanel x:Name="MacroPanel">
-                                <TextBox x:Name="MacroBox" AcceptsReturn="True" MinHeight="70" TextWrapping="Wrap" TextChanged="OnEditorChanged" />
-                                <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_MacroHint}" Margin="0,2,0,6" />
-                            </StackPanel>
-                            <ComboBox x:Name="TargetProfileCombo" SelectionChanged="OnEditorChanged" Margin="0,0,0,6" />
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
+                <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Profiles_Name}" Margin="0,0,8,0" />
+                <TextBox x:Name="NameBox" Grid.Column="1" TextChanged="OnNameChanged" Margin="0,0,16,0" />
+                <TextBlock Grid.Column="2" Style="{StaticResource Label}" Text="{DynamicResource Profiles_Type}" Margin="0,0,8,0" />
+                <ComboBox x:Name="TypeCombo" Grid.Column="3" SelectionChanged="OnTypeChanged">
+                    <ComboBoxItem Content="{DynamicResource Type_Desktop}" />
+                    <ComboBoxItem Content="{DynamicResource Type_Game}" />
+                </ComboBox>
             </Grid>
+        </Border>
+        <TextBlock x:Name="TypeHint" Style="{StaticResource Hint}" Margin="4,0,0,8" />
 
-            <!-- スティック・トリガー -->
-            <TextBlock Style="{StaticResource SectionTitle}" Text="{DynamicResource Profiles_Sticks}" />
-            <TextBlock x:Name="SticksGameHint" Style="{StaticResource Hint}" Text="{DynamicResource Profiles_SticksGameHint}" Margin="0,0,0,6" />
-            <UniformGrid Columns="2">
-                <Border Style="{StaticResource Card}" Margin="0,0,8,8">
-                    <StackPanel x:Name="LeftStickPanel">
-                        <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Profiles_LeftStick}" />
+        <ItemsControl x:Name="IssueList" Margin="0,0,0,8">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Style="{StaticResource Label}" Text="{Binding}" Margin="4,1" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- コントローラー図と割り当て -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" MinWidth="320" />
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource Card}" Margin="0,0,8,8">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_DiagramHint}" Margin="0,0,0,6" />
+                    <controls:ControllerDiagram x:Name="Diagram" />
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Profiles_OtherInputs}" Margin="0,0,8,0" />
+                        <ComboBox x:Name="InputCombo" MinWidth="160" SelectionChanged="OnInputComboChanged" />
                     </StackPanel>
-                </Border>
-                <Border Style="{StaticResource Card}" Margin="0,0,0,8">
-                    <StackPanel x:Name="RightStickPanel">
-                        <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Profiles_RightStick}" />
-                    </StackPanel>
-                </Border>
-            </UniformGrid>
-            <Border Style="{StaticResource Card}">
-                <StackPanel x:Name="TriggerPanel">
-                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Profiles_Triggers}" />
                 </StackPanel>
             </Border>
 
-            <!-- オーバーレイ -->
-            <TextBlock Style="{StaticResource SectionTitle}" Text="{DynamicResource Profiles_Overlay}" />
-            <Border Style="{StaticResource Card}">
-                <StackPanel x:Name="OverlayPanel">
-                    <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_OverlayHint}" Margin="0,0,0,6" />
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="0,0,0,8">
+                <StackPanel>
+                    <TextBlock x:Name="SelectedInputText" Style="{StaticResource SectionTitle}" Margin="0,0,0,6" />
+                    <ListBox x:Name="BindingList" MinHeight="60" MaxHeight="180" SelectionChanged="OnBindingSelected" />
+                    <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
+                        <Button Content="{DynamicResource Profiles_AddBinding}" Click="OnAddBinding" Margin="0,0,8,0" />
+                        <Button Content="{DynamicResource Profiles_RemoveBinding}" Click="OnRemoveBinding" />
+                    </StackPanel>
+
+                    <StackPanel x:Name="EditorPanel">
+                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_Trigger}" />
+                        <ComboBox x:Name="TriggerCombo" SelectionChanged="OnEditorChanged" Margin="0,2,0,6" />
+                        <StackPanel x:Name="HoldPanel">
+                            <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_HoldMs}" />
+                            <TextBox x:Name="HoldBox" TextChanged="OnEditorChanged" Margin="0,2,0,6" />
+                        </StackPanel>
+                        <StackPanel x:Name="DoublePanel">
+                            <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_DoubleMs}" />
+                            <TextBox x:Name="DoubleBox" TextChanged="OnEditorChanged" Margin="0,2,0,6" />
+                        </StackPanel>
+                        <StackPanel x:Name="ChordPanel">
+                            <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_Chord}" />
+                            <TextBox x:Name="ChordBox" TextChanged="OnEditorChanged" Margin="0,2,0,6" />
+                        </StackPanel>
+                        <StackPanel x:Name="LayerPanel">
+                            <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_Layer}" />
+                            <TextBox x:Name="LayerBox" TextChanged="OnEditorChanged" Margin="0,2,0,6" />
+                        </StackPanel>
+
+                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_Action}" />
+                        <ComboBox x:Name="ActionCombo" SelectionChanged="OnEditorChanged" Margin="0,2,0,6" />
+
+                        <StackPanel x:Name="KeyPanel">
+                            <ComboBox x:Name="KeyCombo" IsEditable="True" Margin="0,0,0,4" SelectionChanged="OnEditorChanged" LostFocus="OnEditorChanged" />
+                            <WrapPanel>
+                                <CheckBox x:Name="ModCtrl" Content="Ctrl" Click="OnEditorChanged" Margin="0,0,8,0" />
+                                <CheckBox x:Name="ModShift" Content="Shift" Click="OnEditorChanged" Margin="0,0,8,0" />
+                                <CheckBox x:Name="ModAlt" Content="Alt" Click="OnEditorChanged" Margin="0,0,8,0" />
+                                <CheckBox x:Name="ModWin" Content="Win" Click="OnEditorChanged" />
+                            </WrapPanel>
+                        </StackPanel>
+                        <ComboBox x:Name="MouseCombo" SelectionChanged="OnEditorChanged" Margin="0,0,0,6" />
+                        <StackPanel x:Name="ScrollPanel" Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Profiles_ScrollAmount}" Margin="0,0,8,0" />
+                            <TextBox x:Name="ScrollBox" Width="80" TextChanged="OnEditorChanged" Margin="0,0,8,0" />
+                            <CheckBox x:Name="HorizontalCheck" Content="{DynamicResource Profiles_Horizontal}" Click="OnEditorChanged" />
+                        </StackPanel>
+                        <StackPanel x:Name="MovePanel" Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Style="{StaticResource Label}" Text="X" Margin="0,0,4,0" />
+                            <TextBox x:Name="DxBox" Width="70" TextChanged="OnEditorChanged" Margin="0,0,8,0" />
+                            <TextBlock Style="{StaticResource Label}" Text="Y" Margin="0,0,4,0" />
+                            <TextBox x:Name="DyBox" Width="70" TextChanged="OnEditorChanged" />
+                        </StackPanel>
+                        <StackPanel x:Name="MacroPanel">
+                            <TextBox x:Name="MacroBox" AcceptsReturn="True" MinHeight="70" TextWrapping="Wrap" TextChanged="OnEditorChanged" />
+                            <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_MacroHint}" Margin="0,2,0,6" />
+                        </StackPanel>
+                        <ComboBox x:Name="TargetProfileCombo" SelectionChanged="OnEditorChanged" Margin="0,0,0,6" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
-        </StackPanel>
-    </ScrollViewer>
+        </Grid>
+
+        <!-- スティック・トリガー -->
+        <TextBlock Style="{StaticResource SectionTitle}" Text="{DynamicResource Profiles_Sticks}" />
+        <TextBlock x:Name="SticksGameHint" Style="{StaticResource Hint}" Text="{DynamicResource Profiles_SticksGameHint}" Margin="0,0,0,6" />
+        <UniformGrid Columns="2">
+            <Border Style="{StaticResource Card}" Margin="0,0,8,8">
+                <StackPanel x:Name="LeftStickPanel">
+                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Profiles_LeftStick}" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="0,0,0,8">
+                <StackPanel x:Name="RightStickPanel">
+                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Profiles_RightStick}" />
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+        <Border Style="{StaticResource Card}">
+            <StackPanel x:Name="TriggerPanel">
+                <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Profiles_Triggers}" />
+            </StackPanel>
+        </Border>
+
+        <!-- オーバーレイ -->
+        <TextBlock Style="{StaticResource SectionTitle}" Text="{DynamicResource Profiles_Overlay}" />
+        <Border Style="{StaticResource Card}">
+            <StackPanel x:Name="OverlayPanel">
+                <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Profiles_OverlayHint}" Margin="0,0,0,6" />
+            </StackPanel>
+        </Border>
+    </StackPanel>
 </Page>
