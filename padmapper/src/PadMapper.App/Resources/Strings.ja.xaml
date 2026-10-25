@@ -92,7 +92,7 @@
     <sys:String x:Key="Profiles_Deadzone" xml:space="preserve">デッドゾーン</sys:String>
     <sys:String x:Key="Profiles_Curve" xml:space="preserve">カーブ（1 = 直線）</sys:String>
     <sys:String x:Key="Profiles_Speed" xml:space="preserve">速さ</sys:String>
-    <sys:String x:Key="Profiles_SpeedHint" xml:space="preserve">マウス：最大まで倒したときのピクセル/秒。スクロール：ノッチ/秒。十字キー化は「その他の入力」の LSUp などに割り当てます。</sys:String>
+    <sys:String x:Key="Profiles_SpeedHint" xml:space="preserve">速さ＝いっぱいに倒したときの速さ（マウス：ピクセル/秒、スクロール：ノッチ/秒）。スクロールは倒し量に応じて「少し倒したときの速さ」から「速さ」まで変わります。カーブを大きくすると、倒し始めがゆっくりになります。十字キー化は「その他の入力」の LSUp などに割り当てます。</sys:String>
     <sys:String x:Key="Profiles_InvertY" xml:space="preserve">上下を反転</sys:String>
     <sys:String x:Key="Profiles_Triggers" xml:space="preserve">トリガーとスティック方向のしきい値</sys:String>
     <sys:String x:Key="Profiles_TriggerThreshold" xml:space="preserve">LT/RT を押したとみなす量</sys:String>
@@ -342,4 +342,62 @@
     <sys:String x:Key="Diag_CopyReport" xml:space="preserve">診断情報をコピー</sys:String>
     <sys:String x:Key="Diag_ReportCopied" xml:space="preserve">診断情報をクリップボードにコピーしました。そのまま貼り付けて送ってください。</sys:String>
     <sys:String x:Key="Diag_WizardAdvanced" xml:space="preserve">上級者向け：生レポートのビット位置を直接調べます。通常は左のメニューの「コントローラー設定」を使ってください。</sys:String>
+    <sys:String x:Key="Picker_Title" xml:space="preserve">キーを選ぶ</sys:String>
+    <sys:String x:Key="Picker_Open" xml:space="preserve">キーを選ぶ（キーボード・よく使う操作）</sys:String>
+    <sys:String x:Key="Picker_Direct" xml:space="preserve">キー名を直接入力することもできます</sys:String>
+    <sys:String x:Key="Picker_Modifiers" xml:space="preserve">一緒に押す：</sys:String>
+    <sys:String x:Key="Picker_TabPresets" xml:space="preserve">よく使う操作</sys:String>
+    <sys:String x:Key="Picker_TabKeyboard" xml:space="preserve">キーボード</sys:String>
+    <sys:String x:Key="Picker_Extra" xml:space="preserve">F13〜F24（キーボードに無いキー。他のソフトのショートカットに使うと便利）</sys:String>
+    <sys:String x:Key="Picker_Media" xml:space="preserve">メディア・ブラウザ</sys:String>
+    <sys:String x:Key="Picker_KeyboardHint" xml:space="preserve">キーをクリックして選び、必要なら上の Ctrl / Shift / Alt / Win を押してから「OK」。</sys:String>
+    <sys:String x:Key="Picker_NoKey" xml:space="preserve">キーが選ばれていません</sys:String>
+    <sys:String x:Key="PresetGroup_browser" xml:space="preserve">ブラウザ</sys:String>
+    <sys:String x:Key="PresetGroup_window" xml:space="preserve">Windows</sys:String>
+    <sys:String x:Key="PresetGroup_edit" xml:space="preserve">編集</sys:String>
+    <sys:String x:Key="PresetGroup_media" xml:space="preserve">メディア</sys:String>
+    <sys:String x:Key="Preset_NextTab" xml:space="preserve">次のタブ</sys:String>
+    <sys:String x:Key="Preset_PrevTab" xml:space="preserve">前のタブ</sys:String>
+    <sys:String x:Key="Preset_NewTab" xml:space="preserve">新しいタブ</sys:String>
+    <sys:String x:Key="Preset_CloseTab" xml:space="preserve">タブを閉じる</sys:String>
+    <sys:String x:Key="Preset_ReopenTab" xml:space="preserve">閉じたタブを開き直す</sys:String>
+    <sys:String x:Key="Preset_Back" xml:space="preserve">戻る</sys:String>
+    <sys:String x:Key="Preset_Forward" xml:space="preserve">進む</sys:String>
+    <sys:String x:Key="Preset_Reload" xml:space="preserve">再読み込み</sys:String>
+    <sys:String x:Key="Preset_AddressBar" xml:space="preserve">アドレスバーへ</sys:String>
+    <sys:String x:Key="Preset_Find" xml:space="preserve">ページ内検索</sys:String>
+    <sys:String x:Key="Preset_ZoomIn" xml:space="preserve">拡大</sys:String>
+    <sys:String x:Key="Preset_ZoomOut" xml:space="preserve">縮小</sys:String>
+    <sys:String x:Key="Preset_ZoomReset" xml:space="preserve">拡大率を戻す</sys:String>
+    <sys:String x:Key="Preset_FullScreen" xml:space="preserve">全画面</sys:String>
+    <sys:String x:Key="Preset_PageDown" xml:space="preserve">1画面下へ</sys:String>
+    <sys:String x:Key="Preset_PageUp" xml:space="preserve">1画面上へ</sys:String>
+    <sys:String x:Key="Preset_Top" xml:space="preserve">先頭へ</sys:String>
+    <sys:String x:Key="Preset_Bottom" xml:space="preserve">末尾へ</sys:String>
+    <sys:String x:Key="Preset_SwitchApp" xml:space="preserve">アプリ切り替え</sys:String>
+    <sys:String x:Key="Preset_TaskView" xml:space="preserve">タスクビュー</sys:String>
+    <sys:String x:Key="Preset_StartMenu" xml:space="preserve">スタートメニュー</sys:String>
+    <sys:String x:Key="Preset_ShowDesktop" xml:space="preserve">デスクトップを表示</sys:String>
+    <sys:String x:Key="Preset_CloseWindow" xml:space="preserve">ウィンドウを閉じる</sys:String>
+    <sys:String x:Key="Preset_Minimize" xml:space="preserve">最小化</sys:String>
+    <sys:String x:Key="Preset_Maximize" xml:space="preserve">最大化</sys:String>
+    <sys:String x:Key="Preset_Snip" xml:space="preserve">画面の切り取り</sys:String>
+    <sys:String x:Key="Preset_OnScreenKeyboard" xml:space="preserve">スクリーンキーボード</sys:String>
+    <sys:String x:Key="Preset_Explorer" xml:space="preserve">エクスプローラー</sys:String>
+    <sys:String x:Key="Preset_Copy" xml:space="preserve">コピー</sys:String>
+    <sys:String x:Key="Preset_Paste" xml:space="preserve">貼り付け</sys:String>
+    <sys:String x:Key="Preset_Cut" xml:space="preserve">切り取り</sys:String>
+    <sys:String x:Key="Preset_Undo" xml:space="preserve">元に戻す</sys:String>
+    <sys:String x:Key="Preset_Redo" xml:space="preserve">やり直し</sys:String>
+    <sys:String x:Key="Preset_SelectAll" xml:space="preserve">すべて選択</sys:String>
+    <sys:String x:Key="Preset_Enter" xml:space="preserve">決定（Enter）</sys:String>
+    <sys:String x:Key="Preset_Escape" xml:space="preserve">キャンセル（Esc）</sys:String>
+    <sys:String x:Key="Preset_PlayPause" xml:space="preserve">再生 / 一時停止</sys:String>
+    <sys:String x:Key="Preset_NextTrack" xml:space="preserve">次の曲</sys:String>
+    <sys:String x:Key="Preset_PrevTrack" xml:space="preserve">前の曲</sys:String>
+    <sys:String x:Key="Preset_VolumeUp" xml:space="preserve">音量を上げる</sys:String>
+    <sys:String x:Key="Preset_VolumeDown" xml:space="preserve">音量を下げる</sys:String>
+    <sys:String x:Key="Preset_Mute" xml:space="preserve">ミュート</sys:String>
+    <sys:String x:Key="Profiles_ScrollMinSpeed" xml:space="preserve">スクロール：少し倒したときの速さ（ノッチ/秒）</sys:String>
+    <sys:String x:Key="Profiles_SmoothScroll" xml:space="preserve">なめらかスクロール</sys:String>
 </ResourceDictionary>

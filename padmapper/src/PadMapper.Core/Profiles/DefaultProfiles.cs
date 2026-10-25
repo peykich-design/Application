@@ -18,7 +18,8 @@ public static class DefaultProfiles
         Sticks = new SticksSettings
         {
             Left = new StickSettings { Mode = StickMode.Mouse, Speed = 1600, Curve = 2.0, Deadzone = 0.12 },
-            Right = new StickSettings { Mode = StickMode.Scroll, Speed = 12, Curve = 1.5, Deadzone = 0.15 },
+            // 少し倒すとゆっくり（1 ノッチ/秒）、いっぱいに倒すと速く（30 ノッチ/秒）
+            Right = new StickSettings { Mode = StickMode.Scroll, Speed = 30, MinSpeed = 1, Curve = 2.0, Deadzone = 0.15 },
         },
         Bindings =
         {
@@ -33,8 +34,11 @@ public static class DefaultProfiles
             new Binding { Input = "DPadDown", Action = ActionDef.KeyPress("Down") },
             new Binding { Input = "DPadLeft", Action = ActionDef.KeyPress("Left") },
             new Binding { Input = "DPadRight", Action = ActionDef.KeyPress("Right") },
-            new Binding { Input = "LB", Action = ActionDef.KeyPress("BrowserBack") },
-            new Binding { Input = "RB", Action = ActionDef.KeyPress("BrowserForward") },
+            // ブラウザ：LB/RB でタブ切り替え、長押しで戻る/進む
+            new Binding { Input = "LB", Trigger = TriggerKind.Tap, Action = ActionDef.KeyPress("Tab", "LCtrl", "LShift") },
+            new Binding { Input = "RB", Trigger = TriggerKind.Tap, Action = ActionDef.KeyPress("Tab", "LCtrl") },
+            new Binding { Input = "LB", Trigger = TriggerKind.Hold, Action = ActionDef.KeyPress("BrowserBack") },
+            new Binding { Input = "RB", Trigger = TriggerKind.Hold, Action = ActionDef.KeyPress("BrowserForward") },
             new Binding { Input = "Start", Action = ActionDef.KeyPress("LWin") },
             new Binding { Input = "Back", Action = ActionDef.KeyPress("Tab", "LWin") },
         },

@@ -99,7 +99,10 @@
                         <ComboBox x:Name="ActionCombo" SelectionChanged="OnEditorChanged" Margin="0,2,0,6" />
 
                         <StackPanel x:Name="KeyPanel">
-                            <ComboBox x:Name="KeyCombo" IsEditable="True" Margin="0,0,0,4" SelectionChanged="OnEditorChanged" LostFocus="OnEditorChanged" />
+                            <ui:Button Content="{DynamicResource Picker_Open}" Appearance="Primary" Click="OnPickKey" Margin="0,0,0,6" HorizontalAlignment="Stretch" />
+                            <TextBlock x:Name="KeyDescription" Style="{StaticResource Label}" FontWeight="SemiBold" Margin="0,0,0,6" />
+                            <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Picker_Direct}" />
+                            <ComboBox x:Name="KeyCombo" IsEditable="True" Margin="0,2,0,4" SelectionChanged="OnEditorChanged" LostFocus="OnEditorChanged" />
                             <WrapPanel>
                                 <CheckBox x:Name="ModCtrl" Content="Ctrl" Click="OnEditorChanged" Margin="0,0,8,0" />
                                 <CheckBox x:Name="ModShift" Content="Shift" Click="OnEditorChanged" Margin="0,0,8,0" />

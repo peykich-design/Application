@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using PadMapper.App.Services;
+using PadMapper.App.Views;
 using PadMapper.App.Views.Controls;
 using PadMapper.Core.Model;
 using PadMapper.Core.Output;
@@ -206,7 +207,7 @@ public partial class ProfilesPage : Page
         var a = b.Action;
         string what = a.Type switch
         {
-            ActionType.Key => string.Join("+", (a.Modifiers ?? new()).Append(a.Key ?? "?")),
+            ActionType.Key => KeyText(a.Key, a.Modifiers),
             ActionType.MouseButton => Loc.T("Mouse_" + (a.Button ?? MouseButton.Left)),
             ActionType.Scroll => $"{Loc.T("Act_Scroll")} {a.Amount}",
             ActionType.MouseMove => $"{Loc.T("Act_MouseMove")} {a.Dx},{a.Dy}",
@@ -217,6 +218,32 @@ public partial class ProfilesPage : Page
         var extra = b.Trigger == TriggerKind.Chord && b.Chord != null ? $" (+{string.Join("+", b.Chord)})" : "";
         var layer = !string.IsNullOrEmpty(b.Layer) ? $" [{b.Layer}]" : "";
         return $"{trig}{extra}{layer} → {what}";
+    }
+
+    /// <summary>"Ctrl + Tab（次のタブ）" のようにプリセット名も添えて表示する。</summary>
+    private static string KeyText(string? key, List<string>? modifiers)
+    {
+        if (string.IsNullOrEmpty(key)) return "?";
+        var text = KeyPickerWindow.Describe(key, modifiers);
+        var preset = ShortcutPresets.Find(key, modifiers);
+        return preset != null ? $"{Loc.T(preset.NameKey)}（{text}）" : text;
+    }
+
+    /// <summary>仮想キーボード・よく使う操作からキーを選ぶ。</summary>
+    private void OnPickKey(object sender, RoutedEventArgs e)
+    {
+        if (_binding == null) return;
+        var picker = new KeyPickerWindow(_binding.Action.Key, _binding.Action.Modifiers) { Owner = Window.GetWindow(this) };
+        if (picker.ShowDialog() != true || picker.SelectedKey == null) return;
+        var mods = picker.SelectedModifiers;
+        _loading = true;
+        KeyCombo.Text = picker.SelectedKey;
+        ModCtrl.IsChecked = mods.Contains("LCtrl");
+        ModShift.IsChecked = mods.Contains("LShift");
+        ModAlt.IsChecked = mods.Contains("LAlt");
+        ModWin.IsChecked = mods.Contains("LWin");
+        _loading = false;
+        OnEditorChanged(sender, e);
     }
 
     private void OnBindingSelected(object sender, SelectionChangedEventArgs e)
@@ -260,6 +287,7 @@ public partial class ProfilesPage : Page
         LayerBox.Text = b.Layer ?? "";
         ActionCombo.SelectedIndex = Array.IndexOf(Actions, a.Type);
         KeyCombo.Text = a.Key ?? "";
+        KeyDescription.Text = a.Type == ActionType.Key ? KeyText(a.Key, a.Modifiers) : "";
         var mods = (a.Modifiers ?? new()).Select(m => KeyCatalog.Normalize(m) ?? m).ToList();
         ModCtrl.IsChecked = mods.Contains("LCtrl") || mods.Contains("RCtrl");
         ModShift.IsChecked = mods.Contains("LShift") || mods.Contains("RShift");
@@ -341,6 +369,7 @@ public partial class ProfilesPage : Page
                 break;
         }
         b.Action = a;
+        KeyDescription.Text = a.Type == ActionType.Key ? KeyText(a.Key, a.Modifiers) : "";
 
         if (BindingList.SelectedItem is ListBoxItem item) item.Content = Summary(b);
         UpdateEditorVisibility();
@@ -388,6 +417,8 @@ public partial class ProfilesPage : Page
         panel.Children.Add(Form.Slider("Profiles_Deadzone", 0, 0.5, s.Deadzone, 0.01, "0.00", v => { s.Deadzone = v; MarkDirty(); }));
         panel.Children.Add(Form.Slider("Profiles_Curve", 0.5, 4, s.Curve, 0.1, "0.0", v => { s.Curve = v; MarkDirty(); }));
         panel.Children.Add(Form.Number("Profiles_Speed", s.Speed, v => { s.Speed = v; MarkDirty(); }));
+        panel.Children.Add(Form.Slider("Profiles_ScrollMinSpeed", 0, 10, s.MinSpeed, 0.5, "0.0", v => { s.MinSpeed = v; MarkDirty(); }));
+        panel.Children.Add(Form.Check("Profiles_SmoothScroll", s.SmoothScroll, v => { s.SmoothScroll = v; MarkDirty(); }));
         panel.Children.Add(Form.Check("Profiles_InvertY", s.InvertY, v => { s.InvertY = v; MarkDirty(); }));
         panel.Children.Add(Form.Label("Profiles_SpeedHint", hint: true));
     }

@@ -74,6 +74,11 @@ public sealed class PadEngine : IDisposable
     public event Action<bool>? PausedChanged;
     public event Action<bool>? GyroEnabledChanged;
     public event Action<OverlayNav>? OverlayNavigated;
+    /// <summary>
+    /// スティックによる連続出力（マウス移動・スクロール）が始まった/止まった（エンジンのスレッドから呼ばれる）。
+    /// Windows のタイマーは標準で約 16ms 刻みなので、動いている間だけ細かくしてもらうために使う。
+    /// </summary>
+    public event Action<bool>? ContinuousOutputChanged;
 
     public EngineSnapshot Snapshot => _snapshot;
     public bool IsPaused => _paused;
@@ -337,11 +342,18 @@ public sealed class PadEngine : IDisposable
     {
         double dt = double.IsNaN(_lastStickMs) ? 0 : Math.Clamp((t - _lastStickMs) / 1000.0, 0, 0.05);
         _lastStickMs = t;
+        bool wasMoving = _stickMoving;
         _stickMoving = false;
-        if (_state == null || _paused || _profile.Type != ProfileType.Desktop) return;
-
-        StickOne(_state.LX, _state.LY, _profile.Sticks.Left, dt);
-        StickOne(_state.RX, _state.RY, _profile.Sticks.Right, dt);
+        if (_state != null && !_paused && _profile.Type == ProfileType.Desktop)
+        {
+            StickOne(_state.LX, _state.LY, _profile.Sticks.Left, dt);
+            StickOne(_state.RX, _state.RY, _profile.Sticks.Right, dt);
+        }
+        if (wasMoving != _stickMoving)
+        {
+            if (!_stickMoving) _mouse.ResetScroll();
+            ContinuousOutputChanged?.Invoke(_stickMoving);
+        }
     }
 
     private void StickOne(float x, float y, StickSettings s, double dt)
@@ -358,9 +370,11 @@ public sealed class PadEngine : IDisposable
         }
         else
         {
-            int wv = _mouse.AddScroll(-v.Y * s.Speed * dt, horizontal: false);
+            var rate = StickProcessor.ScrollRate(v, s);
+            int step = s.SmoothScroll ? 1 : 120;
+            int wv = _mouse.AddScroll(rate.Y * dt, horizontal: false, step);
             if (wv != 0) _tracker.Add(OutputCommand.ScrollBy(wv, false));
-            int wh = _mouse.AddScroll(v.X * s.Speed * dt, horizontal: true);
+            int wh = _mouse.AddScroll(rate.X * dt, horizontal: true, step);
             if (wh != 0) _tracker.Add(OutputCommand.ScrollBy(wh, true));
         }
     }

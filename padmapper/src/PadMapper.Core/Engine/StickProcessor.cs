@@ -26,6 +26,25 @@ public static class StickProcessor
         return v / mag * (float)curved;
     }
 
+    /// <summary>
+    /// スクロールの速さ（ノッチ/秒）。倒し量（デッドゾーンとカーブを通した 0〜1）に応じて MinSpeed から Speed まで変わる。
+    /// 縦と横は、ほぼ真っすぐ倒したときに混ざらないよう、弱い方の軸を捨てる。
+    /// </summary>
+    public static Vector2 ScrollRate(Vector2 processed, StickSettings s)
+    {
+        float mag = processed.Length();
+        if (mag <= 0) return Vector2.Zero;
+        var dir = processed / mag;
+        // 主な方向の半分未満の成分は捨てる（縦スクロール中に横が混ざらないように）
+        if (Math.Abs(dir.X) < Math.Abs(dir.Y) * 0.5f) dir.X = 0;
+        else if (Math.Abs(dir.Y) < Math.Abs(dir.X) * 0.5f) dir.Y = 0;
+        if (dir != Vector2.Zero) dir = Vector2.Normalize(dir);
+        double min = Math.Clamp(s.MinSpeed, 0, Math.Max(0, s.Speed));
+        double rate = min + (s.Speed - min) * Math.Clamp(mag, 0, 1);
+        // 上に倒すと上（ホイールの正方向）、右に倒すと右
+        return new Vector2(dir.X, -dir.Y) * (float)rate;
+    }
+
     public static Vector2 Process(float x, float y, StickSettings s)
     {
         var v = ApplyDeadzone(new Vector2(x, y), s.Deadzone, s.OuterDeadzone);

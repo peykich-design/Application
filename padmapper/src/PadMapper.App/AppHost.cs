@@ -29,6 +29,7 @@ internal sealed class AppHost : IDisposable
     private List<DeviceDefinition> _definitions = new();
     private string? _profileBeforeUiNav;
     private bool _exiting;
+    private bool _fineTimer;
 
     public FileLogger Log { get; }
     public ProfileStore Store { get; }
@@ -78,6 +79,15 @@ internal sealed class AppHost : IDisposable
         Engine.PausedChanged += _ => _ui.BeginInvoke(RaiseStateChanged);
         Engine.GyroEnabledChanged += _ => _ui.BeginInvoke(RaiseStateChanged);
         Engine.OverlayNavigated += nav => _ui.BeginInvoke(() => Overlay?.Navigate(nav));
+        // スティックでマウス移動・スクロールしている間だけ、Windows のタイマーを 1ms 刻みにする（なめらかにするため）。
+        // 止まったら元に戻すので、待機中の消費電力は増えない。
+        Engine.ContinuousOutputChanged += moving =>
+        {
+            if (moving == _fineTimer) return;
+            _fineTimer = moving;
+            if (moving) Win32.timeBeginPeriod(1);
+            else Win32.timeEndPeriod(1);
+        };
         Engine.Start();
 
         Controllers = new ControllerManager(Log, () => _definitions, () => Settings);
@@ -330,6 +340,11 @@ internal sealed class AppHost : IDisposable
     {
         SystemEvents.PowerModeChanged -= OnPowerModeChanged;
         try { Engine?.Stop(); } catch (Exception ex) { Log.Error("停止時の例外", ex); }
+        if (_fineTimer)
+        {
+            Win32.timeEndPeriod(1);
+            _fineTimer = false;
+        }
         try { Controllers?.Dispose(); } catch { }
         try { Foreground?.Dispose(); } catch { }
         try { Tray?.Dispose(); } catch { }

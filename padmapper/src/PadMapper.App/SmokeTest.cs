@@ -48,6 +48,17 @@ internal static class SmokeTest
             if (host.Overlay != null) Save(host.Overlay, Path.Combine(outDir, "overlay.png"));
             host.Overlay?.Close2();
 
+            // キー選択画面（よく使う操作 → キーボード）
+            var picker = new KeyPickerWindow("T", new[] { "LCtrl" }) { Owner = window };
+            picker.Show();
+            await Task.Delay(800);
+            Save(picker, Path.Combine(outDir, "picker-presets.png"));
+            if (picker.Content is System.Windows.Controls.DockPanel dp)
+                foreach (var tc in dp.Children.OfType<System.Windows.Controls.TabControl>()) tc.SelectedIndex = 1;
+            await Task.Delay(800);
+            Save(picker, Path.Combine(outDir, "picker-keyboard.png"));
+            picker.Close();
+
             var problems = log.RecentProblems.Where(p => p.Level == LogLevel.Error).ToList();
             File.WriteAllText(result, problems.Count == 0
                 ? "OK"

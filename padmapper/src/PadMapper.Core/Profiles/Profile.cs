@@ -119,8 +119,12 @@ public sealed class StickSettings
     public double OuterDeadzone { get; set; } = 0.02;
     /// <summary>レスポンスカーブの指数（1 で直線、大きいほど中心付近が細かい）。</summary>
     public double Curve { get; set; } = 2.0;
-    /// <summary>Mouse：最大まで倒したときの速度（ピクセル/秒）。Scroll：ノッチ/秒。</summary>
+    /// <summary>Mouse：最大まで倒したときの速度（ピクセル/秒）。Scroll：最大まで倒したときのノッチ/秒。</summary>
     public double Speed { get; set; } = 1600;
+    /// <summary>Scroll：少しだけ倒したときの速さ（ノッチ/秒）。倒し量に応じて Speed まで上がる。</summary>
+    public double MinSpeed { get; set; } = 1.0;
+    /// <summary>Scroll：なめらかスクロール（1ノッチより細かい量で送る）。オフにすると1ノッチ単位。</summary>
+    public bool SmoothScroll { get; set; } = true;
     public bool InvertY { get; set; }
 }
 
