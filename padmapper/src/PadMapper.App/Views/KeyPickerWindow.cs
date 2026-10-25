@@ -53,8 +53,8 @@ public sealed class KeyPickerWindow : Window
 
     private static readonly (string key, string label, double width)[] MediaKeys =
     {
-        K("MediaPlayPause", "▶/❚❚", 1.5), K("MediaStop", "■"), K("MediaPrev", "⏮"), K("MediaNext", "⏭"),
-        K("VolumeMute", "🔇"), K("VolumeDown", "🔉"), K("VolumeUp", "🔊"),
+        K("MediaPlayPause", "再生/停止", 2), K("MediaStop", "停止", 1.5), K("MediaPrev", "前の曲", 1.5), K("MediaNext", "次の曲", 1.5),
+        K("VolumeMute", "ミュート", 1.5), K("VolumeDown", "音量 −", 1.5), K("VolumeUp", "音量 ＋", 1.5),
         K("BrowserBack", "戻る", 1.5), K("BrowserForward", "進む", 1.5),
     };
 
@@ -277,6 +277,15 @@ public sealed class KeyPickerWindow : Window
         _preview.Text = preset != null ? $"{text}（{Loc.T(preset.NameKey)}）" : text;
     }
 
+    /// <summary>キー名 → 画面上の表示（"D0" → "0"、"Equals" → "^ =" など）。</summary>
+    private static readonly Dictionary<string, string> Labels = MainRows.Concat(NavRows).Concat(NumRows)
+        .SelectMany(r => r).Concat(ExtraKeys).Concat(MediaKeys)
+        .Where(k => k.key != "")
+        .GroupBy(k => k.key, StringComparer.OrdinalIgnoreCase)
+        .ToDictionary(g => g.Key, g => g.First().label, StringComparer.OrdinalIgnoreCase);
+
+    public static string KeyLabel(string key) => Labels.TryGetValue(key, out var l) ? l : key;
+
     /// <summary>"Ctrl + Shift + T" のような表示。</summary>
     public static string Describe(string key, IEnumerable<string>? modifiers)
     {
@@ -290,7 +299,7 @@ public sealed class KeyPickerWindow : Window
                 var other => other,
             })
             .ToList();
-        parts.Add(key);
+        parts.Add(KeyLabel(key));
         return string.Join(" + ", parts);
     }
 }
