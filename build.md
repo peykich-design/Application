@@ -71,3 +71,23 @@
   Bash の `run_in_background` で `until` ループを回して完了を待つ（`sleep` の直接実行は不可）。
 - ジョブの成果物（スクリーンショット・ログ）はリリースに置けば `curl -L` で取得できる（artifact は認証が要る）。
 - 失敗ログは GitHub MCP の `get_job_logs` で読める。
+
+## Windows 向け .NET（WPF）をサンドボックスでビルドする
+実例：`padmapper/`（WPF + WPF-UI）。
+- サンドボックス（Ubuntu 24.04）には .NET が無い。`dot.net` / `builds.dotnet.microsoft.com` は 403 で、公式のインストールスクリプトは使えない。
+  → `apt-get install -y dotnet-sdk-8.0`（Ubuntu の公式パッケージ）で入る。NuGet（`api.nuget.org`）には接続できる。
+- **症状**：`dotnet build` で `Microsoft.NET.Sdk.WindowsDesktop.targets was not found`。
+  原因：Ubuntu 版の SDK には WPF/WinForms 用の SDK（WindowsDesktop）が入っていない。
+  対処：Microsoft のパッケージ（`packages.microsoft.com` は接続できる）から SDK の deb を取り、そのフォルダだけコピーする：
+  ```
+  curl -sSL -O https://packages.microsoft.com/ubuntu/22.04/prod/pool/main/d/dotnet-sdk-8.0/dotnet-sdk-8.0_8.0.426-1_amd64.deb
+  dpkg-deb -x dotnet-sdk-8.0_8.0.426-1_amd64.deb x
+  cp -r x/usr/share/dotnet/sdk/*/Sdks/Microsoft.NET.Sdk.WindowsDesktop /usr/lib/dotnet/sdk/8.0.*/Sdks/
+  ```
+  csproj に `<EnableWindowsTargeting>true</EnableWindowsTargeting>` を書けば、XAML を含めて Linux でビルドできる（実行はできない）。
+- `SupportedOSPlatformVersion` を書くと Linux では `NETSDK1135`（TargetPlatformVersion 7.0 より高い）になるので書かない。
+- OS に依存しないロジックは `net8.0` の別プロジェクト（`padmapper/src/PadMapper.Core`）に分けると、Linux で単体テストまで回せる。
+- 実行の確認は GitHub Actions の `windows-latest` で行う。exe に `--smoke-test <出力先>` を付けると全ページを開いて画像に保存して終了する作りにし、
+  結果をリリース（`padmapper-check`）に置いてサンドボックスから `curl -L` で取って見る（`.github/workflows/padmapper.yml`）。
+- WPF-UI（4.0.3）のアイコン名（`SymbolRegular`）が存在するかは、`strings` で dll から名前を抜き出し、**末尾一致**で探す（`grep "Home24$"`）。
+  メタデータの文字列は他の名前と末尾を共有して格納されるので、完全一致（`grep -x`）だと見つからないことがある。

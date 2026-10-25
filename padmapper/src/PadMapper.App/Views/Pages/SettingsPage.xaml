@@ -1,0 +1,59 @@
+<Page
+    x:Class="PadMapper.App.Views.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Settings">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24,8,24,24">
+            <TextBlock Style="{StaticResource PageTitle}" Text="{DynamicResource Nav_Settings}" />
+
+            <Border Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Settings_Startup}" />
+                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Settings_StartupHint}" />
+                        <TextBlock x:Name="StartupState" Style="{StaticResource Hint}" />
+                    </StackPanel>
+                    <ui:ToggleSwitch x:Name="StartupSwitch" Grid.Column="1" Click="OnStartupClick" />
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel x:Name="GeneralPanel">
+                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Settings_General}" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Settings_PauseHotkey}" />
+                    <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Settings_PauseHotkeyHint}" />
+                    <WrapPanel Margin="0,6,0,0">
+                        <TextBox x:Name="HotkeyBox" MinWidth="220" Margin="0,0,8,0" />
+                        <Button Content="{DynamicResource Common_Apply}" Click="OnApplyHotkey" />
+                    </WrapPanel>
+                    <TextBlock x:Name="HotkeyState" Style="{StaticResource Hint}" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Settings_Data}" />
+                    <TextBlock x:Name="DataPath" Style="{StaticResource Hint}" />
+                    <Button Content="{DynamicResource Diag_OpenData}" Click="OnOpenData" Margin="0,6,0,0" />
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{StaticResource SectionTitle}" Text="{DynamicResource Limits_Title}" />
+            <Border Style="{StaticResource Card}">
+                <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Limits_Text}" />
+            </Border>
+            <TextBlock x:Name="VersionText" Style="{StaticResource Hint}" Margin="4,8,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

@@ -12,6 +12,8 @@ Android に限らず、Web・サーバーなど複数のアプリを**アプリ�
 | `amazon-to-ai/` | Amazon のページを AI 向け Markdown/JSON に変換する Web アプリと、URL 取得用の Node サーバー。決まりは `amazon-to-ai/CLAUDE.md` |
 | `amazon-ai-reader-app/` | 上記の Android アプリ版（WebView でページを開いて変換。共有メニュー対応）。決まりは `amazon-ai-reader-app/CLAUDE.md` |
 | `switchbot-panel/` | SwitchBot の機器とシーンをソファ横の常設スマホから操作するパネルアプリ（Android）。決まりは `switchbot-panel/CLAUDE.md` |
+| `padmapper/` | Steam 入力の代わりに、コントローラー（Vader 4 Pro）の入力をキーボード/マウスに変換する Windows 用常駐ソフト（C# / WPF）。決まりは `padmapper/CLAUDE.md` |
+| `.github/workflows/padmapper.yml` | PadMapper を Windows でビルド・単体テスト・起動確認 → exe をリリースに配置 |
 | `.github/workflows/switchbot-panel.yml` | パネルアプリのビルドと単体テスト → APK をリリースに配置 |
 | `.github/workflows/amazon-ai-reader-app.yml` | Android アプリ版のビルドと単体テスト → APK をリリースに配置（エミュレーター確認は指定したときだけ） |
 | `.github/workflows/*-build-and-test-workflow.yml` | 雛形（`android-template/`）のビルドと単体テスト（master への push / PR 時） |
@@ -20,7 +22,7 @@ Android に限らず、Web・サーバーなど複数のアプリを**アプリ�
 ## 知見ファイルの目次
 | ファイル | 内容 | 読むタイミング |
 |---|---|---|
-| [build.md](build.md) | 雛形のバージョン、Gradle 設定、固定署名鍵、GitHub Actions、APK をリリースで配る方法、CI 結果の取り方 | Android アプリのビルド設定やワークフローを触るとき。サンドボックスで APK が作れないと気づいたとき |
+| [build.md](build.md) | 雛形のバージョン、Gradle 設定、固定署名鍵、GitHub Actions、APK をリリースで配る方法、CI 結果の取り方、Windows 向け .NET（WPF）のビルド | アプリのビルド設定やワークフローを触るとき。サンドボックスで APK や Windows アプリが作れないと気づいたとき |
 | [testing.md](testing.md) | CI のエミュレーターで画面・ログを取る方法と注意点、Playwright での Web 確認、ダミー応答でのサーバー確認 | 動作確認をするとき。アプリが起動しない・落ちる原因を調べるとき |
 | [android.md](android.md) | Compose と WebView の落とし穴（白い画面）、WebView からの読み取り、共有メニュー対応、インストール時のトラブル | Android アプリの画面や機能を実装するとき |
 | [amazon.md](amazon.md) | Amazon ページの取得方法の比較、URL の正規化と許可ドメイン、CAPTCHA の見分け方、HTML 構造、評価表記などの落とし穴 | 変換ロジック（extractor）や取得処理を直すとき |
