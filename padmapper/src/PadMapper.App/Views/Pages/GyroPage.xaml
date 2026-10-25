@@ -1,0 +1,60 @@
+<Page
+    x:Class="PadMapper.App.Views.Pages.GyroPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Gyro">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24,8,24,24">
+            <TextBlock Style="{StaticResource PageTitle}" Text="{DynamicResource Nav_Gyro}" />
+
+            <WrapPanel Margin="0,0,0,8">
+                <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Gyro_Profile}" Margin="0,0,8,8" />
+                <ComboBox x:Name="ProfileCombo" MinWidth="220" DisplayMemberPath="Name" SelectionChanged="OnProfileSelected" Margin="0,0,8,8" />
+                <ui:Button Content="{DynamicResource Common_Save}" Appearance="Primary" Click="OnSave" Margin="0,0,8,8" />
+                <Button Content="{DynamicResource Common_Revert}" Click="OnRevert" Margin="0,0,8,8" />
+            </WrapPanel>
+            <TextBlock x:Name="DirtyText" Style="{StaticResource Hint}" Margin="0,0,0,8" />
+
+            <!-- リアルタイム表示 -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Gyro_Live}" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Content="{DynamicResource Gyro_Calibrate}" Click="OnCalibrate" Margin="0,0,8,0" />
+                            <Button Content="{DynamicResource Gyro_ResetBias}" Click="OnResetBias" />
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Gyro_LiveHint}" Margin="0,4,0,6" />
+                    <Border Height="180" CornerRadius="4" Background="{DynamicResource ControlFillColorSecondaryBrush}" ClipToBounds="True">
+                        <Canvas x:Name="Chart" />
+                    </Border>
+                    <WrapPanel Margin="0,6,0,0">
+                        <TextBlock Text="■ " Foreground="#FF4FC3F7" />
+                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Gyro_LegendRawYaw}" Margin="0,0,12,0" />
+                        <TextBlock Text="■ " Foreground="#FFFFB74D" />
+                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Gyro_LegendRawPitch}" Margin="0,0,12,0" />
+                        <TextBlock Text="■ " Foreground="#FF81C784" />
+                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Gyro_LegendOutX}" Margin="0,0,12,0" />
+                        <TextBlock Text="■ " Foreground="#FFE57373" />
+                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Gyro_LegendOutY}" />
+                    </WrapPanel>
+                    <TextBlock x:Name="ValuesText" Style="{StaticResource Mono}" Margin="0,6,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <!-- 設定 -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel x:Name="SettingsPanel">
+                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Gyro_Settings}" />
+                </StackPanel>
+            </Border>
+            <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Gyro_StickNote}" Margin="4,0,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

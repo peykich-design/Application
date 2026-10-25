@@ -143,6 +143,17 @@ public sealed class ProfileStore
         return path;
     }
 
+    public void DeleteDeviceDefinition(string id)
+    {
+        var path = Path.Combine(DevicesDir, SafeFileName(id) + ".json");
+        if (!File.Exists(path)) return;
+        lock (_lock)
+        {
+            Backup(path);
+            File.Delete(path);
+        }
+    }
+
     // ---------- 共通 ----------
 
     private T? LoadWithFallback<T>(string path) where T : class

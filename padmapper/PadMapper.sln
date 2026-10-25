@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7844650B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PadMapper.Core.Tests", "tests\PadMapper.Core.Tests\PadMapper.Core.Tests.csproj", "{095B15E3-491C-4ADE-A17A-D8291D538A19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PadMapper.App", "src\PadMapper.App\PadMapper.App.csproj", "{A5E9FA7F-1743-48B4-AEA7-792250A7B6FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,9 +30,14 @@ Global
 		{095B15E3-491C-4ADE-A17A-D8291D538A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{095B15E3-491C-4ADE-A17A-D8291D538A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{095B15E3-491C-4ADE-A17A-D8291D538A19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5E9FA7F-1743-48B4-AEA7-792250A7B6FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E9FA7F-1743-48B4-AEA7-792250A7B6FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E9FA7F-1743-48B4-AEA7-792250A7B6FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E9FA7F-1743-48B4-AEA7-792250A7B6FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CA8D83C4-10CF-40D9-86D7-640A2DA08D40} = {C3E34838-818A-4CF6-A786-5A05648D6F0E}
 		{095B15E3-491C-4ADE-A17A-D8291D538A19} = {7844650B-CD58-413A-A492-271D0C9D5E84}
+		{A5E9FA7F-1743-48B4-AEA7-792250A7B6FF} = {C3E34838-818A-4CF6-A786-5A05648D6F0E}
 	EndGlobalSection
 EndGlobal

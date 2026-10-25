@@ -1,0 +1,81 @@
+# padmapper（Windows 用の常駐ソフト）をビルド・単体テストし、起動確認（スモークテスト）をしてから
+# PadMapper.exe を「padmapper-latest」リリースに置く。起動確認の画面とログは「padmapper-check」リリースに置く。
+name: PadMapper (Windows)
+
+on:
+  push:
+    paths:
+      - "padmapper/**"
+      - ".github/workflows/padmapper.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: padmapper-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: padmapper
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Unit tests
+        run: dotnet test tests/PadMapper.Core.Tests -c Release --logger "console;verbosity=normal"
+
+      - name: Publish (single exe, self-contained)
+        run: >
+          dotnet publish src/PadMapper.App -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true -p:DebugType=none -o publish
+
+      - name: Smoke test (open every page, take screenshots)
+        run: |
+          $out = Join-Path $pwd "smoke"
+          $p = Start-Process -FilePath "publish\PadMapper.exe" -ArgumentList "--smoke-test", "`"$out`"" -PassThru
+          if (-not $p.WaitForExit(150000)) { $p.Kill(); Write-Error "smoke test timed out" }
+          Write-Host "exit code: $($p.ExitCode)"
+          Get-ChildItem $out -Recurse | ForEach-Object { Write-Host $_.FullName }
+          Get-Content "$out\appdata\logs\*.log" -ErrorAction SilentlyContinue
+          $result = Get-Content "$out\smoke-result.txt" -Raw -ErrorAction SilentlyContinue
+          Write-Host "result: $result"
+          if ($p.ExitCode -ne 0 -or -not $result -or -not $result.StartsWith("OK")) { exit 1 }
+
+      - name: Pack smoke results
+        if: always()
+        run: |
+          if (Test-Path smoke) {
+            Copy-Item smoke\appdata\logs\*.log smoke\ -ErrorAction SilentlyContinue
+            Compress-Archive -Path smoke\*.png, smoke\*.log, smoke\smoke-result.txt -DestinationPath smoke.zip -Force -ErrorAction SilentlyContinue
+          }
+
+      - name: Publish smoke results to release
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if (Test-Path smoke.zip) {
+            gh release delete padmapper-check --yes --cleanup-tag 2>$null
+            gh release create padmapper-check smoke.zip --target "${{ github.sha }}" --prerelease `
+              --title "PadMapper 起動確認（CI）" --notes "CI のスモークテストで撮った画面とログです。"
+          }
+
+      - name: Publish exe to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete padmapper-latest --yes --cleanup-tag 2>$null
+          gh release create padmapper-latest publish\PadMapper.exe --target "${{ github.sha }}" --prerelease `
+            --title "PadMapper (最新ビルド)" `
+            --notes "ブランチ ${{ github.ref_name }} の最新ビルドです。PadMapper.exe をダウンロードして実行してください（.NET のインストールは不要）。"
