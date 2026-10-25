@@ -83,6 +83,13 @@ internal static class Win32
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr GetModuleHandle(string? name);
 
+    // ---------- タイマーの分解能（標準は約 15.6ms） ----------
+    [DllImport("winmm.dll")]
+    public static extern uint timeBeginPeriod(uint ms);
+
+    [DllImport("winmm.dll")]
+    public static extern uint timeEndPeriod(uint ms);
+
     // ---------- Raw Input ----------
     public const uint RIDEV_REMOVE = 0x00000001;
     public const uint RIDEV_INPUTSINK = 0x00000100;

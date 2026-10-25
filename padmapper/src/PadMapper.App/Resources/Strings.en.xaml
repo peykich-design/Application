@@ -92,7 +92,7 @@
     <sys:String x:Key="Profiles_Deadzone" xml:space="preserve">Deadzone</sys:String>
     <sys:String x:Key="Profiles_Curve" xml:space="preserve">Curve (1 = linear)</sys:String>
     <sys:String x:Key="Profiles_Speed" xml:space="preserve">Speed</sys:String>
-    <sys:String x:Key="Profiles_SpeedHint" xml:space="preserve">Mouse: pixels/s at full tilt. Scroll: notches/s. For D-pad style use LSUp etc. under Other inputs.</sys:String>
+    <sys:String x:Key="Profiles_SpeedHint" xml:space="preserve">Speed = speed at full tilt (mouse: pixels/s, scroll: notches/s). Scrolling goes from the slight-tilt speed up to Speed depending on how far you tilt. A larger curve makes small tilts slower. For D-pad style use LSUp etc. under Other inputs.</sys:String>
     <sys:String x:Key="Profiles_InvertY" xml:space="preserve">Invert Y</sys:String>
     <sys:String x:Key="Profiles_Triggers" xml:space="preserve">Trigger and direction thresholds</sys:String>
     <sys:String x:Key="Profiles_TriggerThreshold" xml:space="preserve">LT/RT press threshold</sys:String>
@@ -342,4 +342,67 @@
     <sys:String x:Key="Diag_CopyReport" xml:space="preserve">Copy diagnostic info</sys:String>
     <sys:String x:Key="Diag_ReportCopied" xml:space="preserve">Diagnostic info copied to the clipboard. Paste it into your report.</sys:String>
     <sys:String x:Key="Diag_WizardAdvanced" xml:space="preserve">Advanced: inspect raw report bit positions directly. Normally use Controller setup in the menu.</sys:String>
+    <sys:String x:Key="Picker_Title" xml:space="preserve">Choose a key</sys:String>
+    <sys:String x:Key="Picker_Open" xml:space="preserve">Choose key (keyboard / common actions)</sys:String>
+    <sys:String x:Key="Picker_Direct" xml:space="preserve">You can also type a key name</sys:String>
+    <sys:String x:Key="Picker_Modifiers" xml:space="preserve">Hold with:</sys:String>
+    <sys:String x:Key="Picker_TabPresets" xml:space="preserve">Common actions</sys:String>
+    <sys:String x:Key="Picker_TabKeyboard" xml:space="preserve">Keyboard</sys:String>
+    <sys:String x:Key="Picker_Extra" xml:space="preserve">F13-F24 (not on most keyboards; handy for shortcuts in other apps)</sys:String>
+    <sys:String x:Key="Picker_Media" xml:space="preserve">Media and browser</sys:String>
+    <sys:String x:Key="Picker_KeyboardHint" xml:space="preserve">Click a key, toggle Ctrl / Shift / Alt / Win above if needed, then OK.</sys:String>
+    <sys:String x:Key="Picker_NoKey" xml:space="preserve">No key selected</sys:String>
+    <sys:String x:Key="PresetGroup_browser" xml:space="preserve">Browser</sys:String>
+    <sys:String x:Key="PresetGroup_window" xml:space="preserve">Windows</sys:String>
+    <sys:String x:Key="PresetGroup_edit" xml:space="preserve">Editing</sys:String>
+    <sys:String x:Key="PresetGroup_media" xml:space="preserve">Media</sys:String>
+    <sys:String x:Key="Preset_NextTab" xml:space="preserve">Next tab</sys:String>
+    <sys:String x:Key="Preset_PrevTab" xml:space="preserve">Previous tab</sys:String>
+    <sys:String x:Key="Preset_NewTab" xml:space="preserve">New tab</sys:String>
+    <sys:String x:Key="Preset_CloseTab" xml:space="preserve">Close tab</sys:String>
+    <sys:String x:Key="Preset_ReopenTab" xml:space="preserve">Reopen closed tab</sys:String>
+    <sys:String x:Key="Preset_Back" xml:space="preserve">Back</sys:String>
+    <sys:String x:Key="Preset_Forward" xml:space="preserve">Forward</sys:String>
+    <sys:String x:Key="Preset_Reload" xml:space="preserve">Reload</sys:String>
+    <sys:String x:Key="Preset_AddressBar" xml:space="preserve">Address bar</sys:String>
+    <sys:String x:Key="Preset_Find" xml:space="preserve">Find in page</sys:String>
+    <sys:String x:Key="Preset_ZoomIn" xml:space="preserve">Zoom in</sys:String>
+    <sys:String x:Key="Preset_ZoomOut" xml:space="preserve">Zoom out</sys:String>
+    <sys:String x:Key="Preset_ZoomReset" xml:space="preserve">Reset zoom</sys:String>
+    <sys:String x:Key="Preset_FullScreen" xml:space="preserve">Full screen</sys:String>
+    <sys:String x:Key="Preset_PageDown" xml:space="preserve">Page down</sys:String>
+    <sys:String x:Key="Preset_PageUp" xml:space="preserve">Page up</sys:String>
+    <sys:String x:Key="Preset_Top" xml:space="preserve">Top</sys:String>
+    <sys:String x:Key="Preset_Bottom" xml:space="preserve">Bottom</sys:String>
+    <sys:String x:Key="Preset_SwitchApp" xml:space="preserve">Switch apps</sys:String>
+    <sys:String x:Key="Preset_TaskView" xml:space="preserve">Task view</sys:String>
+    <sys:String x:Key="Preset_StartMenu" xml:space="preserve">Start menu</sys:String>
+    <sys:String x:Key="Preset_ShowDesktop" xml:space="preserve">Show desktop</sys:String>
+    <sys:String x:Key="Preset_CloseWindow" xml:space="preserve">Close window</sys:String>
+    <sys:String x:Key="Preset_Minimize" xml:space="preserve">Minimize</sys:String>
+    <sys:String x:Key="Preset_Maximize" xml:space="preserve">Maximize</sys:String>
+    <sys:String x:Key="Preset_Snip" xml:space="preserve">Snip screen</sys:String>
+    <sys:String x:Key="Preset_OnScreenKeyboard" xml:space="preserve">On-screen keyboard</sys:String>
+    <sys:String x:Key="Preset_Explorer" xml:space="preserve">File Explorer</sys:String>
+    <sys:String x:Key="Preset_Copy" xml:space="preserve">Copy</sys:String>
+    <sys:String x:Key="Preset_Paste" xml:space="preserve">Paste</sys:String>
+    <sys:String x:Key="Preset_Cut" xml:space="preserve">Cut</sys:String>
+    <sys:String x:Key="Preset_Undo" xml:space="preserve">Undo</sys:String>
+    <sys:String x:Key="Preset_Redo" xml:space="preserve">Redo</sys:String>
+    <sys:String x:Key="Preset_SelectAll" xml:space="preserve">Select all</sys:String>
+    <sys:String x:Key="Preset_Enter" xml:space="preserve">Enter</sys:String>
+    <sys:String x:Key="Preset_Escape" xml:space="preserve">Escape</sys:String>
+    <sys:String x:Key="Preset_PlayPause" xml:space="preserve">Play / pause</sys:String>
+    <sys:String x:Key="Preset_NextTrack" xml:space="preserve">Next track</sys:String>
+    <sys:String x:Key="Preset_PrevTrack" xml:space="preserve">Previous track</sys:String>
+    <sys:String x:Key="Preset_VolumeUp" xml:space="preserve">Volume up</sys:String>
+    <sys:String x:Key="Preset_VolumeDown" xml:space="preserve">Volume down</sys:String>
+    <sys:String x:Key="Preset_Mute" xml:space="preserve">Mute</sys:String>
+    <sys:String x:Key="Profiles_ScrollMinSpeed" xml:space="preserve">Scroll: speed at slight tilt (notches/s)</sys:String>
+    <sys:String x:Key="Profiles_SmoothScroll" xml:space="preserve">Smooth scrolling</sys:String>
+    <sys:String x:Key="Settings_CloseAction" xml:space="preserve">When the close button is pressed</sys:String>
+    <sys:String x:Key="Close_Tray" xml:space="preserve">Hide to the tray (removed from the taskbar)</sys:String>
+    <sys:String x:Key="Close_Taskbar" xml:space="preserve">Minimize to the taskbar (keep the icon)</sys:String>
+    <sys:String x:Key="Settings_TrayHint" xml:space="preserve">PadMapper keeps running either way. To exit, right-click the tray icon → Exit. Windows 11 may hide the tray icon under the ^ arrow. To always show it, open the taskbar settings below and turn on PadMapper under 'Other system tray icons'.</sys:String>
+    <sys:String x:Key="Settings_OpenTaskbarSettings" xml:space="preserve">Open taskbar settings</sys:String>
 </ResourceDictionary>

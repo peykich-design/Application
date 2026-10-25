@@ -91,21 +91,22 @@ public sealed class MouseAccumulator
         return (ix, iy);
     }
 
-    /// <summary>notches はノッチ数（1ノッチ = 120）。戻り値は WHEEL_DELTA 単位。</summary>
-    public int AddScroll(double notches, bool horizontal)
+    /// <summary>
+    /// notches はノッチ数（1ノッチ = 120）。戻り値は WHEEL_DELTA 単位。
+    /// step は送る単位（1 ならなめらか、120 なら1ノッチ単位）。
+    /// </summary>
+    public int AddScroll(double notches, bool horizontal, int step = 1)
     {
-        if (horizontal)
-        {
-            _wheelH += notches * 120;
-            int w = (int)Math.Truncate(_wheelH);
-            _wheelH -= w;
-            return w;
-        }
-        _wheelV += notches * 120;
-        int v = (int)Math.Truncate(_wheelV);
-        _wheelV -= v;
-        return v;
+        step = Math.Max(1, step);
+        ref double acc = ref horizontal ? ref _wheelH : ref _wheelV;
+        acc += notches * 120;
+        int w = (int)Math.Truncate(acc / step) * step;
+        acc -= w;
+        return w;
     }
+
+    /// <summary>スクロールを止めたときの端数を捨てる（次に倒したとき、前の端数で余計に動かないように）。</summary>
+    public void ResetScroll() => _wheelV = _wheelH = 0;
 
     public void Reset() => _x = _y = _wheelV = _wheelH = 0;
 }

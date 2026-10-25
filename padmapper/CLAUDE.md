@@ -29,6 +29,10 @@ CI：`.github/workflows/padmapper.yml`（windows-latest でテスト → 単一 
 - 押しっぱなしの出力は、プロファイル切替・一時停止・終了・切断・スリープ時に必ず全て離す（`BindingEngine.ReleaseAll`）。
 - 画面の文言を足したら `Strings.ja.xaml` と `Strings.en.xaml` の両方に同じキーを足す。
   XAML の文字列は `{` で始めない（マークアップ拡張と解釈されるおそれがあるため）。
+- **スティックのスクロール・マウス移動がカクつく** → Windows のタイマーは標準で約 15.6ms 刻みなので、
+  エンジンが 4ms ごとに送るつもりでも、まとめて送られる。スティックで連続出力している間だけ `timeBeginPeriod(1)` にし、
+  止まったら `timeEndPeriod(1)` で戻す（`PadEngine.ContinuousOutputChanged` → `AppHost`）。
+- よく使う操作（ブラウザのタブ切り替えなど）は `Core/Output/ShortcutPresets.cs`。足したら文言 `Preset_<Id>` を両方の言語に足す。
 - `ImplicitUsings` は App では無効（WPF と WinForms の型名がぶつかるため）。`MessageBox` は `System.Windows.MessageBox` と書く。
 
 ## 確認のしかた
