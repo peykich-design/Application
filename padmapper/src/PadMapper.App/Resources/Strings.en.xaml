@@ -34,7 +34,7 @@
     <sys:String x:Key="Home_ControllerDetail" xml:space="preserve">Connection: {0} / Definition: {1} / Method: {2} / Last report: {3}</sys:String>
     <sys:String x:Key="Home_NoReports" xml:space="preserve">no reports yet</sys:String>
     <sys:String x:Key="Home_NotConnected" xml:space="preserve">Not connected</sys:String>
-    <sys:String x:Key="Home_NotConnectedHint" xml:space="preserve">No supported controller found. Connect the Vader 4 Pro in DInput mode (blue LED). Use Diagnostics to inspect devices.</sys:String>
+    <sys:String x:Key="Home_NotConnectedHint" xml:space="preserve">No gamepad found. Connect Flydigi controllers in DInput mode (blue LED).</sys:String>
     <sys:String x:Key="Home_Profile" xml:space="preserve">Current profile</sys:String>
     <sys:String x:Key="Home_ByAuto" xml:space="preserve">automatic (app rules)</sys:String>
     <sys:String x:Key="Home_ByManual" xml:space="preserve">selected manually</sys:String>
@@ -223,7 +223,7 @@
     <sys:String x:Key="Diag_DumpHint" xml:space="preserve">Select a device above and start. Changed bytes are highlighted. The Vader 4 Pro shows several rows (one per collection); look for the one that changes when you press a back button.</sys:String>
     <sys:String x:Key="Diag_Rate" xml:space="preserve">Reports: {0}/s (total {1})</sys:String>
     <sys:String x:Key="Diag_ChangedBits" xml:space="preserve">Changed bits:</sys:String>
-    <sys:String x:Key="Diag_Wizard" xml:space="preserve">Mapping wizard</sys:String>
+    <sys:String x:Key="Diag_Wizard" xml:space="preserve">Mapping wizard (advanced)</sys:String>
     <sys:String x:Key="Diag_WizardHint" xml:space="preserve">1. Start dump  2. Pick a target  3. Record idle (2 s, don't touch)  4. Record input, then press the button a few times / rotate the stick / turn along the gyro axis  5. Assign. When done, Save definition. You can also export Markdown (docs/vader4pro-report.md format).</sys:String>
     <sys:String x:Key="Diag_Target" xml:space="preserve">Target</sys:String>
     <sys:String x:Key="Diag_Format" xml:space="preserve">Format (axes)</sys:String>
@@ -280,4 +280,66 @@
     <sys:String x:Key="Overlay_CloseMenu" xml:space="preserve">Close</sys:String>
     <sys:String x:Key="Overlay_Status" xml:space="preserve">Profile: {0} / {1}</sys:String>
     <sys:String x:Key="Overlay_Help" xml:space="preserve">Up {0} / Down {1} / Select {2} / Close {3} (input also reaches the game)</sys:String>
+    <sys:String x:Key="Nav_Setup" xml:space="preserve">Controller setup</sys:String>
+    <sys:String x:Key="Setup_Intro" xml:space="preserve">PadMapper will guide you through each button. Just press and release what the screen asks; it learns your controller's layout. No keys or clicks are sent while setting up.</sys:String>
+    <sys:String x:Key="Setup_Device" xml:space="preserve">Controller</sys:String>
+    <sys:String x:Key="Setup_IncludeBack" xml:space="preserve">Also set up back buttons (M1-M4) and C/Z (skip if your controller has none)</sys:String>
+    <sys:String x:Key="Setup_Start" xml:space="preserve">Start setup</sys:String>
+    <sys:String x:Key="Setup_NoDevice" xml:space="preserve">No gamepad found. Connect it and press Re-scan.</sys:String>
+    <sys:String x:Key="Setup_KindGamepad" xml:space="preserve">standard gamepad</sys:String>
+    <sys:String x:Key="Setup_KindVendor" xml:space="preserve">vendor report</sys:String>
+    <sys:String x:Key="Setup_Progress" xml:space="preserve">Step {0} of {1}</sys:String>
+    <sys:String x:Key="Setup_Rest" xml:space="preserve">Take your hands off the controller and wait</sys:String>
+    <sys:String x:Key="Setup_RestHint" xml:space="preserve">Recording the idle state for 1 second.</sys:String>
+    <sys:String x:Key="Setup_StickRight" xml:space="preserve">Push the {0} fully to the right, then release</sys:String>
+    <sys:String x:Key="Setup_StickDown" xml:space="preserve">Push the {0} fully down, then release</sys:String>
+    <sys:String x:Key="Setup_Trigger" xml:space="preserve">Pull the {0} all the way, then release</sys:String>
+    <sys:String x:Key="Setup_Button" xml:space="preserve">Press and release {0}</sys:String>
+    <sys:String x:Key="Setup_ButtonHint" xml:space="preserve">If your controller doesn't have this button, press Skip.</sys:String>
+    <sys:String x:Key="Setup_AxisHint" xml:space="preserve">The moved axis is detected; release to continue.</sys:String>
+    <sys:String x:Key="Setup_Detected" xml:space="preserve">Detected: {0}  → release to continue</sys:String>
+    <sys:String x:Key="Setup_NoInput" xml:space="preserve">No input is arriving from the controller. Try pressing any button once. If nothing changes, check the controller mode (DInput) and connection, or pick another entry.</sys:String>
+    <sys:String x:Key="Setup_Back" xml:space="preserve">Back</sys:String>
+    <sys:String x:Key="Setup_Skip" xml:space="preserve">Skip</sys:String>
+    <sys:String x:Key="Setup_Restart" xml:space="preserve">Start over</sys:String>
+    <sys:String x:Key="Setup_Cancel" xml:space="preserve">Cancel</sys:String>
+    <sys:String x:Key="Setup_Done" xml:space="preserve">All steps are done</sys:String>
+    <sys:String x:Key="Setup_DoneHint" xml:space="preserve">Press Save to start using this layout right away.</sys:String>
+    <sys:String x:Key="Setup_Save" xml:space="preserve">Save and use</sys:String>
+    <sys:String x:Key="Setup_Saved" xml:space="preserve">Saved. Check that the controller shows as connected on the Home page.</sys:String>
+    <sys:String x:Key="Setup_NothingToSave" xml:space="preserve">Nothing was assigned (everything was skipped).</sys:String>
+    <sys:String x:Key="Setup_Results" xml:space="preserve">Assignments</sys:String>
+    <sys:String x:Key="Setup_Footer" xml:space="preserve">If something was detected wrongly, use Back to redo it. Saved layouts can be removed in Diagnostics.</sys:String>
+    <sys:String x:Key="Setup_LeftStick" xml:space="preserve">left stick</sys:String>
+    <sys:String x:Key="Setup_RightStick" xml:space="preserve">right stick</sys:String>
+    <sys:String x:Key="BtnName_A" xml:space="preserve">the A button</sys:String>
+    <sys:String x:Key="BtnName_B" xml:space="preserve">the B button</sys:String>
+    <sys:String x:Key="BtnName_X" xml:space="preserve">the X button</sys:String>
+    <sys:String x:Key="BtnName_Y" xml:space="preserve">the Y button</sys:String>
+    <sys:String x:Key="BtnName_LB" xml:space="preserve">LB (left bumper)</sys:String>
+    <sys:String x:Key="BtnName_RB" xml:space="preserve">RB (right bumper)</sys:String>
+    <sys:String x:Key="BtnName_LT" xml:space="preserve">LT (left trigger)</sys:String>
+    <sys:String x:Key="BtnName_RT" xml:space="preserve">RT (right trigger)</sys:String>
+    <sys:String x:Key="BtnName_Back" xml:space="preserve">Back (View / Select / −)</sys:String>
+    <sys:String x:Key="BtnName_Start" xml:space="preserve">Start (Menu / Start / +)</sys:String>
+    <sys:String x:Key="BtnName_Guide" xml:space="preserve">the Home (logo) button</sys:String>
+    <sys:String x:Key="BtnName_L3" xml:space="preserve">left stick click (L3)</sys:String>
+    <sys:String x:Key="BtnName_R3" xml:space="preserve">right stick click (R3)</sys:String>
+    <sys:String x:Key="BtnName_DPadUp" xml:space="preserve">D-pad up</sys:String>
+    <sys:String x:Key="BtnName_DPadDown" xml:space="preserve">D-pad down</sys:String>
+    <sys:String x:Key="BtnName_DPadLeft" xml:space="preserve">D-pad left</sys:String>
+    <sys:String x:Key="BtnName_DPadRight" xml:space="preserve">D-pad right</sys:String>
+    <sys:String x:Key="BtnName_M1" xml:space="preserve">back button M1</sys:String>
+    <sys:String x:Key="BtnName_M2" xml:space="preserve">back button M2</sys:String>
+    <sys:String x:Key="BtnName_M3" xml:space="preserve">back button M3</sys:String>
+    <sys:String x:Key="BtnName_M4" xml:space="preserve">back button M4</sys:String>
+    <sys:String x:Key="BtnName_C" xml:space="preserve">the C button</sys:String>
+    <sys:String x:Key="BtnName_Z" xml:space="preserve">the Z button</sys:String>
+    <sys:String x:Key="Home_SetupTitle" xml:space="preserve">Controller setup</sys:String>
+    <sys:String x:Key="Home_SetupGeneric" xml:space="preserve">The button layout is still a guess (read as a standard gamepad). Use Controller setup to match your controller by pressing its buttons.</sys:String>
+    <sys:String x:Key="Home_SetupNotConnected" xml:space="preserve">No controller found. Connect it and open Controller setup to see detected devices.</sys:String>
+    <sys:String x:Key="Home_OpenSetup" xml:space="preserve">Open controller setup</sys:String>
+    <sys:String x:Key="Diag_CopyReport" xml:space="preserve">Copy diagnostic info</sys:String>
+    <sys:String x:Key="Diag_ReportCopied" xml:space="preserve">Diagnostic info copied to the clipboard. Paste it into your report.</sys:String>
+    <sys:String x:Key="Diag_WizardAdvanced" xml:space="preserve">Advanced: inspect raw report bit positions directly. Normally use Controller setup in the menu.</sys:String>
 </ResourceDictionary>

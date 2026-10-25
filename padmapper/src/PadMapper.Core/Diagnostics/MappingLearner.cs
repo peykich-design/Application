@@ -57,6 +57,8 @@ public sealed class MappingLearner
         for (int i = 0; i < len; i++)
         {
             if (excludeOffsets?.Contains(i) == true || stable[i] == 0) continue;
+            // 何通りもの値をとるバイトはスティックなどのアナログ値なので、ボタンの候補にしない
+            if (_idle.Concat(_active).Select(r => r[i]).Distinct().Count() > 3) continue;
             int count = _active.Count(r => ((r[i] ^ idle[i]) & stable[i]) != 0);
             if (count > bestCount)
             {

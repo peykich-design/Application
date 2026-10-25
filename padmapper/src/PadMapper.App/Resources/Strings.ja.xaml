@@ -34,7 +34,7 @@
     <sys:String x:Key="Home_ControllerDetail" xml:space="preserve">接続：{0} / 定義：{1} / 受信方式：{2} / 最後の受信：{3}</sys:String>
     <sys:String x:Key="Home_NoReports" xml:space="preserve">まだ受信していません</sys:String>
     <sys:String x:Key="Home_NotConnected" xml:space="preserve">未接続</sys:String>
-    <sys:String x:Key="Home_NotConnectedHint" xml:space="preserve">対応するコントローラーが見つかりません。Vader 4 Pro は DInput モード（青 LED）で接続してください。認識しない場合は「診断」でデバイスを確認できます。</sys:String>
+    <sys:String x:Key="Home_NotConnectedHint" xml:space="preserve">ゲームパッドが見つかりません。Flydigi のコントローラーは DInput モード（青 LED）で接続してください。</sys:String>
     <sys:String x:Key="Home_Profile" xml:space="preserve">現在のプロファイル</sys:String>
     <sys:String x:Key="Home_ByAuto" xml:space="preserve">自動（アプリ連携）</sys:String>
     <sys:String x:Key="Home_ByManual" xml:space="preserve">手動で選択</sys:String>
@@ -223,7 +223,7 @@
     <sys:String x:Key="Diag_DumpHint" xml:space="preserve">上の一覧でデバイスを選んでから開始します。前回から変わったバイトは色付きで表示します。Vader 4 Pro は製品が同じ行が複数出ます（コレクションごと）。背面ボタンを押して値が変わる行を探してください。</sys:String>
     <sys:String x:Key="Diag_Rate" xml:space="preserve">受信 {0} 回/秒（合計 {1}）</sys:String>
     <sys:String x:Key="Diag_ChangedBits" xml:space="preserve">変化したビット：</sys:String>
-    <sys:String x:Key="Diag_Wizard" xml:space="preserve">割り当てウィザード</sys:String>
+    <sys:String x:Key="Diag_Wizard" xml:space="preserve">割り当てウィザード（上級者向け）</sys:String>
     <sys:String x:Key="Diag_WizardHint" xml:space="preserve">1. ダンプを開始 → 2. 対象を選ぶ → 3.「静止を記録」（2 秒、何も触らない）→ 4.「操作を記録」を押してから対象のボタンを数回押す／スティックを一周回す／ジャイロ軸で回す → 5.「割り当て」。全て終えたら「定義を保存」。結果は Markdown（docs/vader4pro-report.md の形式）でも書き出せます。</sys:String>
     <sys:String x:Key="Diag_Target" xml:space="preserve">対象</sys:String>
     <sys:String x:Key="Diag_Format" xml:space="preserve">形式（軸）</sys:String>
@@ -280,4 +280,66 @@
     <sys:String x:Key="Overlay_CloseMenu" xml:space="preserve">閉じる</sys:String>
     <sys:String x:Key="Overlay_Status" xml:space="preserve">プロファイル：{0} / {1}</sys:String>
     <sys:String x:Key="Overlay_Help" xml:space="preserve">操作：{0} 上 / {1} 下 / {2} 決定 / {3} 閉じる（入力はゲームにも届きます）</sys:String>
+    <sys:String x:Key="Nav_Setup" xml:space="preserve">コントローラー設定</sys:String>
+    <sys:String x:Key="Setup_Intro" xml:space="preserve">ボタンを1つずつ案内します。画面の指示どおりに押して離すだけで、そのコントローラーのボタン配置を覚えます。設定中はキー入力やクリックは出ません。</sys:String>
+    <sys:String x:Key="Setup_Device" xml:space="preserve">コントローラー</sys:String>
+    <sys:String x:Key="Setup_IncludeBack" xml:space="preserve">背面ボタン（M1〜M4）と C・Z も設定する（無い場合は「スキップ」で飛ばせます）</sys:String>
+    <sys:String x:Key="Setup_Start" xml:space="preserve">設定を始める</sys:String>
+    <sys:String x:Key="Setup_NoDevice" xml:space="preserve">ゲームパッドが見つかりません。接続してから「再列挙」を押してください。</sys:String>
+    <sys:String x:Key="Setup_KindGamepad" xml:space="preserve">標準のゲームパッド</sys:String>
+    <sys:String x:Key="Setup_KindVendor" xml:space="preserve">ベンダー独自のレポート</sys:String>
+    <sys:String x:Key="Setup_Progress" xml:space="preserve">手順 {0} / {1}</sys:String>
+    <sys:String x:Key="Setup_Rest" xml:space="preserve">コントローラーから手を離して、そのまま待ってください</sys:String>
+    <sys:String x:Key="Setup_RestHint" xml:space="preserve">何も触らない状態を 1 秒記録します。</sys:String>
+    <sys:String x:Key="Setup_StickRight" xml:space="preserve">「{0}」を右いっぱいに倒して、離してください</sys:String>
+    <sys:String x:Key="Setup_StickDown" xml:space="preserve">「{0}」を下いっぱいに倒して、離してください</sys:String>
+    <sys:String x:Key="Setup_Trigger" xml:space="preserve">「{0}」を奥まで引いて、離してください</sys:String>
+    <sys:String x:Key="Setup_Button" xml:space="preserve">「{0}」を押して、離してください</sys:String>
+    <sys:String x:Key="Setup_ButtonHint" xml:space="preserve">このボタンが無い場合は「スキップ」を押してください。</sys:String>
+    <sys:String x:Key="Setup_AxisHint" xml:space="preserve">倒した（引いた）軸を見つけて、戻すと次に進みます。</sys:String>
+    <sys:String x:Key="Setup_Detected" xml:space="preserve">検出：{0}　→ 離すと次へ進みます</sys:String>
+    <sys:String x:Key="Setup_NoInput" xml:space="preserve">コントローラーからの入力が届いていません。どれかボタンを1回押してみてください。それでも変わらない場合は、コントローラーのモード（DInput）や接続を確認するか、別の項目を選んでください。</sys:String>
+    <sys:String x:Key="Setup_Back" xml:space="preserve">戻る</sys:String>
+    <sys:String x:Key="Setup_Skip" xml:space="preserve">スキップ</sys:String>
+    <sys:String x:Key="Setup_Restart" xml:space="preserve">最初から</sys:String>
+    <sys:String x:Key="Setup_Cancel" xml:space="preserve">中止</sys:String>
+    <sys:String x:Key="Setup_Done" xml:space="preserve">全ての手順が終わりました</sys:String>
+    <sys:String x:Key="Setup_DoneHint" xml:space="preserve">「保存して使う」を押すと、この配置ですぐに使い始めます。</sys:String>
+    <sys:String x:Key="Setup_Save" xml:space="preserve">保存して使う</sys:String>
+    <sys:String x:Key="Setup_Saved" xml:space="preserve">保存しました。ホーム画面でコントローラーが「接続」になっているか確認してください。</sys:String>
+    <sys:String x:Key="Setup_NothingToSave" xml:space="preserve">割り当てがありません（全てスキップされました）。</sys:String>
+    <sys:String x:Key="Setup_Results" xml:space="preserve">決まった割り当て</sys:String>
+    <sys:String x:Key="Setup_Footer" xml:space="preserve">うまく判定されない場合は「戻る」でやり直せます。保存した配置は「診断」の「保存した定義を削除」で消せます。</sys:String>
+    <sys:String x:Key="Setup_LeftStick" xml:space="preserve">左スティック</sys:String>
+    <sys:String x:Key="Setup_RightStick" xml:space="preserve">右スティック</sys:String>
+    <sys:String x:Key="BtnName_A" xml:space="preserve">A ボタン</sys:String>
+    <sys:String x:Key="BtnName_B" xml:space="preserve">B ボタン</sys:String>
+    <sys:String x:Key="BtnName_X" xml:space="preserve">X ボタン</sys:String>
+    <sys:String x:Key="BtnName_Y" xml:space="preserve">Y ボタン</sys:String>
+    <sys:String x:Key="BtnName_LB" xml:space="preserve">LB（左上のバンパー）</sys:String>
+    <sys:String x:Key="BtnName_RB" xml:space="preserve">RB（右上のバンパー）</sys:String>
+    <sys:String x:Key="BtnName_LT" xml:space="preserve">LT（左トリガー）</sys:String>
+    <sys:String x:Key="BtnName_RT" xml:space="preserve">RT（右トリガー）</sys:String>
+    <sys:String x:Key="BtnName_Back" xml:space="preserve">Back（ビュー / セレクト / −）</sys:String>
+    <sys:String x:Key="BtnName_Start" xml:space="preserve">Start（メニュー / スタート / ＋）</sys:String>
+    <sys:String x:Key="BtnName_Guide" xml:space="preserve">ホームボタン（ロゴのボタン）</sys:String>
+    <sys:String x:Key="BtnName_L3" xml:space="preserve">左スティックの押し込み（L3）</sys:String>
+    <sys:String x:Key="BtnName_R3" xml:space="preserve">右スティックの押し込み（R3）</sys:String>
+    <sys:String x:Key="BtnName_DPadUp" xml:space="preserve">十字キーの上</sys:String>
+    <sys:String x:Key="BtnName_DPadDown" xml:space="preserve">十字キーの下</sys:String>
+    <sys:String x:Key="BtnName_DPadLeft" xml:space="preserve">十字キーの左</sys:String>
+    <sys:String x:Key="BtnName_DPadRight" xml:space="preserve">十字キーの右</sys:String>
+    <sys:String x:Key="BtnName_M1" xml:space="preserve">背面ボタン M1</sys:String>
+    <sys:String x:Key="BtnName_M2" xml:space="preserve">背面ボタン M2</sys:String>
+    <sys:String x:Key="BtnName_M3" xml:space="preserve">背面ボタン M3</sys:String>
+    <sys:String x:Key="BtnName_M4" xml:space="preserve">背面ボタン M4</sys:String>
+    <sys:String x:Key="BtnName_C" xml:space="preserve">C ボタン</sys:String>
+    <sys:String x:Key="BtnName_Z" xml:space="preserve">Z ボタン</sys:String>
+    <sys:String x:Key="Home_SetupTitle" xml:space="preserve">コントローラーの設定</sys:String>
+    <sys:String x:Key="Home_SetupGeneric" xml:space="preserve">ボタン配置が仮のままです（標準のゲームパッドとして読んでいます）。「コントローラー設定」で、ボタンを押しながら実機に合わせてください。</sys:String>
+    <sys:String x:Key="Home_SetupNotConnected" xml:space="preserve">コントローラーが見つかりません。接続して「コントローラー設定」を開くと、認識されているデバイスを確認できます。</sys:String>
+    <sys:String x:Key="Home_OpenSetup" xml:space="preserve">コントローラー設定を開く</sys:String>
+    <sys:String x:Key="Diag_CopyReport" xml:space="preserve">診断情報をコピー</sys:String>
+    <sys:String x:Key="Diag_ReportCopied" xml:space="preserve">診断情報をクリップボードにコピーしました。そのまま貼り付けて送ってください。</sys:String>
+    <sys:String x:Key="Diag_WizardAdvanced" xml:space="preserve">上級者向け：生レポートのビット位置を直接調べます。通常は左のメニューの「コントローラー設定」を使ってください。</sys:String>
 </ResourceDictionary>

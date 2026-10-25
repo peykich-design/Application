@@ -4,87 +4,99 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="Home">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24,8,24,24">
-            <TextBlock Style="{StaticResource PageTitle}" Text="{DynamicResource Nav_Home}" />
+    <StackPanel Margin="24,8,24,24">
+        <TextBlock Style="{StaticResource PageTitle}" Text="{DynamicResource Nav_Home}" />
 
-            <ItemsControl x:Name="NoticeList" Margin="0,0,0,8">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Style="{StaticResource Card}" Background="{DynamicResource SystemFillColorCautionBackgroundBrush}">
-                            <TextBlock Style="{StaticResource Label}" Text="{Binding}" />
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+        <ItemsControl x:Name="NoticeList" Margin="0,0,0,8">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource Card}" Background="{DynamicResource SystemFillColorCautionBackgroundBrush}">
+                        <TextBlock Style="{StaticResource Label}" Text="{Binding}" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-            <UniformGrid Columns="2">
-                <Border Style="{StaticResource Card}" Margin="0,0,8,8">
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_Controller}" />
-                        <TextBlock x:Name="ControllerText" Style="{StaticResource Value}" />
-                        <TextBlock x:Name="ControllerDetail" Style="{StaticResource Hint}" />
-                    </StackPanel>
-                </Border>
-                <Border Style="{StaticResource Card}" Margin="0,0,0,8">
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_Profile}" />
-                        <TextBlock x:Name="ProfileText" Style="{StaticResource Value}" />
-                        <TextBlock x:Name="ProfileDetail" Style="{StaticResource Hint}" />
-                    </StackPanel>
-                </Border>
-                <Border Style="{StaticResource Card}" Margin="0,0,8,8">
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_Foreground}" />
-                        <TextBlock x:Name="ForegroundText" Style="{StaticResource Value}" />
-                    </StackPanel>
-                </Border>
-                <Border Style="{StaticResource Card}" Margin="0,0,0,8">
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_Elevation}" />
-                        <TextBlock x:Name="ElevationText" Style="{StaticResource Value}" />
-                        <TextBlock x:Name="ElevationDetail" Style="{StaticResource Hint}" />
-                    </StackPanel>
-                </Border>
-            </UniformGrid>
+        <Border x:Name="SetupCard" Style="{StaticResource Card}" Visibility="Collapsed">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="0,0,12,0">
+                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Home_SetupTitle}" />
+                    <TextBlock x:Name="SetupText" Style="{StaticResource Hint}" />
+                </StackPanel>
+                <ui:Button Grid.Column="1" Content="{DynamicResource Home_OpenSetup}" Appearance="Primary" Click="OnOpenSetup" VerticalAlignment="Center" />
+            </Grid>
+        </Border>
 
-            <Border Style="{StaticResource Card}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Home_PauseTitle}" />
-                        <TextBlock x:Name="PauseHint" Style="{StaticResource Hint}" />
-                    </StackPanel>
-                    <ui:ToggleSwitch x:Name="PauseSwitch" Grid.Column="1" Click="OnPauseClick" />
-                </Grid>
-            </Border>
-            <Border Style="{StaticResource Card}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Home_GyroTitle}" />
-                        <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_GyroHint}" />
-                    </StackPanel>
-                    <ui:ToggleSwitch x:Name="GyroSwitch" Grid.Column="1" Click="OnGyroClick" />
-                </Grid>
-            </Border>
-            <Border Style="{StaticResource Card}">
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="{DynamicResource Home_ShowOverlay}" Click="OnOverlayClick" Margin="0,0,8,0" />
-                    <TextBlock Style="{StaticResource Hint}" VerticalAlignment="Center" Text="{DynamicResource Home_OverlayHint}" />
+        <UniformGrid Columns="2">
+            <Border Style="{StaticResource Card}" Margin="0,0,8,8">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_Controller}" />
+                    <TextBlock x:Name="ControllerText" Style="{StaticResource Value}" />
+                    <TextBlock x:Name="ControllerDetail" Style="{StaticResource Hint}" />
                 </StackPanel>
             </Border>
-
-            <TextBlock Style="{StaticResource SectionTitle}" Text="{DynamicResource Limits_Title}" />
-            <Border Style="{StaticResource Card}">
-                <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Limits_Text}" />
+            <Border Style="{StaticResource Card}" Margin="0,0,0,8">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_Profile}" />
+                    <TextBlock x:Name="ProfileText" Style="{StaticResource Value}" />
+                    <TextBlock x:Name="ProfileDetail" Style="{StaticResource Hint}" />
+                </StackPanel>
             </Border>
-        </StackPanel>
-    </ScrollViewer>
+            <Border Style="{StaticResource Card}" Margin="0,0,8,8">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_Foreground}" />
+                    <TextBlock x:Name="ForegroundText" Style="{StaticResource Value}" />
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="0,0,0,8">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_Elevation}" />
+                    <TextBlock x:Name="ElevationText" Style="{StaticResource Value}" />
+                    <TextBlock x:Name="ElevationDetail" Style="{StaticResource Hint}" />
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <Border Style="{StaticResource Card}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Home_PauseTitle}" />
+                    <TextBlock x:Name="PauseHint" Style="{StaticResource Hint}" />
+                </StackPanel>
+                <ui:ToggleSwitch x:Name="PauseSwitch" Grid.Column="1" Click="OnPauseClick" />
+            </Grid>
+        </Border>
+        <Border Style="{StaticResource Card}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource Label}" FontWeight="SemiBold" Text="{DynamicResource Home_GyroTitle}" />
+                    <TextBlock Style="{StaticResource Hint}" Text="{DynamicResource Home_GyroHint}" />
+                </StackPanel>
+                <ui:ToggleSwitch x:Name="GyroSwitch" Grid.Column="1" Click="OnGyroClick" />
+            </Grid>
+        </Border>
+        <Border Style="{StaticResource Card}">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="{DynamicResource Home_ShowOverlay}" Click="OnOverlayClick" Margin="0,0,8,0" />
+                <TextBlock Style="{StaticResource Hint}" VerticalAlignment="Center" Text="{DynamicResource Home_OverlayHint}" />
+            </StackPanel>
+        </Border>
+
+        <TextBlock Style="{StaticResource SectionTitle}" Text="{DynamicResource Limits_Title}" />
+        <Border Style="{StaticResource Card}">
+            <TextBlock Style="{StaticResource Label}" Text="{DynamicResource Limits_Text}" />
+        </Border>
+    </StackPanel>
 </Page>

@@ -131,9 +131,11 @@ internal sealed class AppHost : IDisposable
         _definitions = list;
     }
 
-    public void SaveDefinition(DeviceDefinition def)
+    public void SaveDefinition(DeviceDefinition def) => SaveDefinitions(new[] { def });
+
+    public void SaveDefinitions(IEnumerable<DeviceDefinition> defs)
     {
-        Store.SaveDeviceDefinition(def);
+        foreach (var d in defs) Store.SaveDeviceDefinition(d);
         ReloadDefinitions();
         Controllers.Restart();
     }

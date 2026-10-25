@@ -44,6 +44,12 @@ public sealed class DeviceDefinition
     public string Source { get; set; } = "learned";
     /// <summary>実機で全項目を確認済みなら true。</summary>
     public bool Verified { get; set; }
+    /// <summary>
+    /// "raw"：レポートのバイト位置で読む（ベンダー独自のレポート用）。
+    /// "hid"：Windows の HID 解析（HidP）で、ボタン番号・軸の Usage で読む（標準の HID ゲームパッド用）。
+    /// </summary>
+    public string Kind { get; set; } = "raw";
+    public bool IsHid => string.Equals(Kind, "hid", StringComparison.OrdinalIgnoreCase);
     public DeviceMatch Match { get; set; } = new();
     /// <summary>先頭バイト（レポート ID）。null なら確認しない。</summary>
     public int? ReportId { get; set; }
@@ -67,9 +73,12 @@ public sealed class DeviceMatch
     public int? Usage { get; set; }
     /// <summary>製品名に含まれる文字列（大文字小文字は区別しない）。</summary>
     public string? ProductContains { get; set; }
+    /// <summary>ベンダー独自のコレクション（Usage Page 0xFF00 以上）だけに一致させる。</summary>
+    public bool VendorCollectionOnly { get; set; }
 
     public bool Matches(HidDeviceInfo d)
     {
+        if (VendorCollectionOnly && d.UsagePage < 0xFF00) return false;
         if (VendorId is int v && v != d.VendorId) return false;
         if (ProductId is int p && p != d.ProductId) return false;
         if (UsagePage is int up && up != d.UsagePage) return false;
@@ -86,10 +95,15 @@ public sealed class ByteValue
     public int Value { get; set; }
 }
 
-/// <summary>ボタン1つ分。Value が null なら (byte &amp; Mask) != 0、あれば (byte &amp; Mask) == Value で押下。</summary>
+/// <summary>
+/// ボタン1つ分。raw：Value が null なら (byte &amp; Mask) != 0、あれば (byte &amp; Mask) == Value で押下。
+/// hid：HidButton（ボタン番号）か HidHat（ハットスイッチの up / down / left / right）。
+/// </summary>
 public sealed class ButtonMap
 {
     public string Input { get; set; } = "";
+    public int? HidButton { get; set; }
+    public string? HidHat { get; set; }
     public int Offset { get; set; }
     public int Mask { get; set; }
     public int? Value { get; set; }
@@ -99,6 +113,8 @@ public sealed class AxisMap
 {
     /// <summary>LX / LY / RX / RY / LT / RT。</summary>
     public string Axis { get; set; } = "";
+    /// <summary>hid：軸の Usage（Generic Desktop の X=0x30, Y=0x31, Z=0x32, Rx=0x33, Ry=0x34, Rz=0x35 など）。</summary>
+    public int? HidUsage { get; set; }
     public int Offset { get; set; }
     /// <summary>16ビット値の上位バイトの位置。省略時は Offset+1。</summary>
     public int? OffsetHi { get; set; }

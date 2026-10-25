@@ -341,6 +341,53 @@ internal static class Win32
     [DllImport("hid.dll")]
     public static extern int HidP_GetCaps(IntPtr preparsed, out HIDP_CAPS caps);
 
+    public const int HidP_Input = 0;
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct HIDP_VALUE_CAPS
+    {
+        public ushort UsagePage;
+        public byte ReportID;
+        public byte IsAlias;
+        public ushort BitField;
+        public ushort LinkCollection;
+        public ushort LinkUsage;
+        public ushort LinkUsagePage;
+        public byte IsRange;
+        public byte IsStringRange;
+        public byte IsDesignatorRange;
+        public byte IsAbsolute;
+        public byte HasNull;
+        public byte Reserved;
+        public ushort BitSize;
+        public ushort ReportCount;
+        public ushort Reserved2a, Reserved2b, Reserved2c, Reserved2d, Reserved2e;
+        public uint UnitsExp;
+        public uint Units;
+        public int LogicalMin;
+        public int LogicalMax;
+        public int PhysicalMin;
+        public int PhysicalMax;
+        // Range / NotRange の共用体（Range のとき UsageMin/UsageMax、NotRange のとき Usage = UsageMin）
+        public ushort UsageMin;
+        public ushort UsageMax;
+        public ushort StringMin, StringMax, DesignatorMin, DesignatorMax, DataIndexMin, DataIndexMax;
+    }
+
+    [DllImport("hid.dll")]
+    public static extern int HidP_GetValueCaps(int reportType, [Out] HIDP_VALUE_CAPS[] caps, ref ushort length, IntPtr preparsed);
+
+    [DllImport("hid.dll")]
+    public static extern int HidP_GetUsages(int reportType, ushort usagePage, ushort linkCollection, [Out] ushort[] usages,
+        ref uint length, IntPtr preparsed, byte[] report, uint reportLength);
+
+    [DllImport("hid.dll")]
+    public static extern int HidP_GetUsageValue(int reportType, ushort usagePage, ushort linkCollection, ushort usage,
+        out uint value, IntPtr preparsed, byte[] report, uint reportLength);
+
+    [DllImport("hid.dll")]
+    public static extern int HidP_MaxUsageListLength(int reportType, ushort usagePage, IntPtr preparsed);
+
     [DllImport("hid.dll", SetLastError = true)]
     public static extern bool HidD_SetOutputReport(SafeFileHandle device, byte[] buffer, int length);
 
