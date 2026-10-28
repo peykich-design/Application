@@ -1,0 +1,59 @@
+# knowledge-vault（ナレッジ記録）をビルド・単体テストし、APKを「knowledge-vault-latest」リリースに置く。
+# スマホからはリリースページを開いて APK をダウンロードするだけでインストールできる。
+name: Knowledge vault app
+
+on:
+  push:
+    paths:
+      - "knowledge-vault/**"
+      - ".github/workflows/knowledge-vault.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: knowledge-vault
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: knowledge-vault
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug testDebugUnitTest --stacktrace
+
+      - name: Rename APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk knowledge-vault.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: knowledge-vault.apk
+          path: knowledge-vault/knowledge-vault.apk
+
+      - name: Publish to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete knowledge-vault-latest --yes --cleanup-tag || true
+          gh release create knowledge-vault-latest knowledge-vault.apk \
+            --target "${{ github.sha }}" --prerelease \
+            --title "ナレッジ記録 (最新ビルド)" \
+            --notes "ブランチ ${{ github.ref_name }} の最新ビルドです。knowledge-vault.apk をダウンロードしてインストールしてください。"

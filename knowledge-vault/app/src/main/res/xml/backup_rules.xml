@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 11 以前の自動バックアップ。データの正本は Google Drive（M2）なので、Vault と DB は対象外。
+     API キーは端末の Keystore でしか復号できないため対象外。 -->
+<full-backup-content>
+    <exclude domain="file" path="vault/" />
+    <exclude domain="database" path="." />
+    <exclude domain="sharedpref" path="secure.xml" />
+    <exclude domain="sharedpref" path="drafts.xml" />
+</full-backup-content>
