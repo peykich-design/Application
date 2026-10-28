@@ -34,6 +34,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.peykich.knowledge.data.LoadedNote
 import com.peykich.knowledge.data.NoteRepository
+import com.peykich.knowledge.data.noteType
+import com.peykich.knowledge.data.tagList
 import com.peykich.knowledge.domain.NotePlanner
 import com.peykich.knowledge.ui.MarkdownText
 import com.peykich.knowledge.ui.NoteRoute

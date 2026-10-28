@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.peykich.knowledge.data.NoteEntity
+import com.peykich.knowledge.data.noteType
 import com.peykich.knowledge.data.NoteRepository
 import com.peykich.knowledge.domain.NoteType
 import com.peykich.knowledge.domain.VaultLayout

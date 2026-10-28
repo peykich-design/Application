@@ -31,12 +31,13 @@ data class NoteEntity(
     val created: String,
     val updated: String,
     val formatted: Boolean,
-) {
-    val noteType: NoteType get() = NoteType.fromKey(type) ?: NoteType.WORK
-    val tagList: List<String> get() = tags.split('\n').filter { it.isNotBlank() }
+)
 
-    fun toIndexEntry() = IndexEntry(path, noteType, title, summary, tagList, updated)
-}
+// Room の列にしないよう、計算で出す値は拡張プロパティにしている
+val NoteEntity.noteType: NoteType get() = NoteType.fromKey(type) ?: NoteType.WORK
+val NoteEntity.tagList: List<String> get() = tags.split('\n').filter { it.isNotBlank() }
+
+fun NoteEntity.toIndexEntry() = IndexEntry(path, noteType, title, summary, tagList, updated)
 
 /** オフライン検索と候補の絞り込み用（FTS4）。中身は SearchTokens で2文字ずつに分けた文字列。 */
 @Fts4

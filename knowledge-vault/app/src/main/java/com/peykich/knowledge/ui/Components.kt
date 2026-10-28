@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.peykich.knowledge.data.NoteEntity
+import com.peykich.knowledge.data.noteType
 
 /** 一覧の1行（タイトル・summary・カテゴリと日付）。 */
 @Composable
