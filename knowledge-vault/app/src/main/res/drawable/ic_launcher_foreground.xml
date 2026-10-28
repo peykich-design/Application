@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- ノート -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M36,32h30a4,4 0 0 1 4,4v36a4,4 0 0 1 -4,4h-30a4,4 0 0 1 -4,-4v-36a4,4 0 0 1 4,-4z" />
+    <!-- 罫線 -->
+    <path
+        android:fillColor="#3F5AA8"
+        android:pathData="M40,42h22v3h-22z M40,50h22v3h-22z M40,58h14v3h-14z" />
+    <!-- きらめき（AI整形） -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M72,58 L75,66 L83,69 L75,72 L72,80 L69,72 L61,69 L69,66 Z" />
+</vector>
