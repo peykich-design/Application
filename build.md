@@ -65,6 +65,9 @@
   実行時ライブラリ（`kotlinx-serialization-core-jvm` / `-json-jvm`）と `junit` / `hamcrest-core` の jar を Maven Central から `curl` で取る。
 - 例：`kotlinc/bin/kotlinc -Xplugin=... -cp <jar...> -d out <main の .kt> <test の .kt>` → `java -cp out:<jar...>:kotlinc/lib/kotlin-stdlib.jar org.junit.runner.JUnitCore <テストクラス>`
 - 作業はスクラッチパッドで行い、ダウンロードしたものはリポジトリに入れない。
+- **`error: syntax error: Unclosed comment`**：KDoc の中に `assets/prompts/*.md` のように `/*` を書くと、Kotlin は入れ子のコメントの始まりとみなす。
+  コメント内では `/*` を書かない。
+- Maven Central（`repo1.maven.org`）が 429 のときは、Google のミラー `https://maven-central.storage-download.googleapis.com/maven2/` から同じパスで取れる。
 
 ## CI の結果をサンドボックスから見る方法
 - リポジトリは公開なので、`curl https://api.github.com/repos/<owner>/<repo>/actions/runs/<id>` で認証なしに状態を取れる。
