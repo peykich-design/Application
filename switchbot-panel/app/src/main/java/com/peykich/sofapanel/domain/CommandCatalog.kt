@@ -27,7 +27,26 @@ object CommandCatalog {
 
     fun custom(name: String) = Command(name, "default", "customize", label = name)
 
+    /** Google TV（同じネットワーク内で直接操作。SwitchBot は通さない） */
+    const val GOOGLE_TV_TYPE = "Google TV"
+    const val GOOGLE_TV_COMMAND = "googletv"
+
+    fun isGoogleTv(d: Device) = d.type == GOOGLE_TV_TYPE
+
+    private fun tvKey(code: Int, label: String) = Command("key", code.toString(), GOOGLE_TV_COMMAND, label)
+
+    val GOOGLE_TV_COMMANDS = listOf(
+        tvKey(223, "スリープ"),
+        tvKey(224, "起動"),
+        tvKey(26, "電源"),
+        tvKey(3, "ホーム"),
+        tvKey(24, "音量＋"),
+        tvKey(25, "音量−"),
+        tvKey(164, "消音"),
+    )
+
     fun commandsFor(d: Device): List<Command> {
+        if (isGoogleTv(d)) return GOOGLE_TV_COMMANDS
         val on = Command("turnOn", label = if (d.infrared) "電源" else "オン")
         val off = Command("turnOff", label = if (d.infrared) "電源オフ" else "オフ")
         if (d.infrared) {

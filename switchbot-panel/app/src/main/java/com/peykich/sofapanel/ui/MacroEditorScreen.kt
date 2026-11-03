@@ -99,6 +99,7 @@ private data class WaitRequest(val seconds: Int, val insertIndex: Int, val repla
 fun MacroEditorScreen(vm: PanelViewModel, target: Screen.Editor) {
     val macros by vm.macros.collectAsState()
     val lists by vm.lists.collectAsState()
+    val allDevices by vm.devices.collectAsState()
     val run by vm.runner.state.collectAsState()
     val status by vm.repo.status.collectAsState()
     val accent = LocalAccent.current
@@ -265,7 +266,7 @@ fun MacroEditorScreen(vm: PanelViewModel, target: Screen.Editor) {
                                             waitEdit = WaitRequest(step.seconds, i, replaceIndex = i)
                                         }
                                         is DeviceStep -> {
-                                            val d = lists.devices.firstOrNull { it.id == step.deviceId }
+                                            val d = allDevices.firstOrNull { it.id == step.deviceId }
                                             if (d != null) pick = PickRequest(d, i, replaceIndex = i)
                                         }
                                         else -> Unit
@@ -321,7 +322,7 @@ fun MacroEditorScreen(vm: PanelViewModel, target: Screen.Editor) {
                 // ---- 右：追加できる部品 ----
                 Palette(
                     modifier = Modifier.weight(0.42f).fillMaxHeight(),
-                    devices = lists.devices.filter { CommandCatalog.isControllable(it) },
+                    devices = allDevices.filter { CommandCatalog.isControllable(it) },
                     scenes = lists.scenes,
                     macros = others,
                     onTap = { addPart(it, -1) },

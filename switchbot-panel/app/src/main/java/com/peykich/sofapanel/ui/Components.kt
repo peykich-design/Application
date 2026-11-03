@@ -121,6 +121,7 @@ fun deviceIcon(d: Device?): ImageVector {
     return when {
         d.name.contains("スクリーン") || d.name.contains("screen", ignoreCase = true) -> PanelIcons.Screen
         d.name.contains("プロジェクター") || type == "Projector" -> PanelIcons.Projector
+        type == "Google TV" -> PanelIcons.Tv
         type == "TV" || type == "IPTV/Streamer" || type == "Set Top Box" -> PanelIcons.Tv
         type.contains("Light") || type.contains("Bulb") || type.contains("Lamp") -> PanelIcons.Bulb
         type.startsWith("Plug") -> PanelIcons.Plug
@@ -133,6 +134,10 @@ fun deviceIcon(d: Device?): ImageVector {
 /** ボタンに出すアイコン。対応するものが無ければ null（文字で表示） */
 fun commandIcon(c: Command): ImageVector? = when {
     c.command == "turnOn" && c.label == "電源" -> PanelIcons.Power
+    c.commandType == "googletv" && c.parameter == "223" -> PanelIcons.Moon
+    c.commandType == "googletv" && c.parameter == "26" -> PanelIcons.Power
+    c.commandType == "googletv" && c.parameter == "24" -> PanelIcons.VolumeUp
+    c.commandType == "googletv" && c.parameter == "25" -> PanelIcons.VolumeDown
     c.command == "volumeAdd" -> PanelIcons.VolumeUp
     c.command == "volumeSub" -> PanelIcons.VolumeDown
     c.command == "Play" -> PanelIcons.Play

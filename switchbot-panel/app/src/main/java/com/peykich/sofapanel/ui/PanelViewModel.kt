@@ -58,6 +58,8 @@ class PanelViewModel(application: Application) : AndroidViewModel(application) {
     val settings: StateFlow<AppSettings> = repo.settings
     val lists: StateFlow<CachedLists> = repo.lists
     val macros: StateFlow<List<Macro>> = repo.macroStore.macros
+    /** パネルやマクロで使える機器（SwitchBot ＋ Google TV） */
+    val devices: StateFlow<List<Device>> = repo.allDevices
 
     var screen by mutableStateOf<Screen>(Screen.Main)
         private set
@@ -232,13 +234,28 @@ class PanelViewModel(application: Application) : AndroidViewModel(application) {
     fun sendPanel(panel: PanelConfig, command: Command) {
         appScope.launch {
             try {
-                repo.withRetry { it.command(panel.deviceId, command) }
+                repo.sendCommand(panel.deviceId, command)
                 // 赤外線リモコンは状態が分からないので「送信した」ことだけを出す
                 repo.post("${panel.deviceName}：${command.label}を送信しました")
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 repo.post(repo.reason(e, panel.deviceName), error = true)
+            }
+        }
+    }
+
+    /** 設定画面の Google TV「試す」 */
+    fun sendTv(command: Command) {
+        val name = repo.googleTv.device.value?.name ?: "Google TV"
+        appScope.launch {
+            try {
+                repo.sendCommand(com.peykich.sofapanel.googletv.GoogleTvManager.DEVICE_ID, command)
+                repo.notice("$name：${command.label}を送信しました")
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                repo.notice(repo.reason(e, name), error = true)
             }
         }
     }

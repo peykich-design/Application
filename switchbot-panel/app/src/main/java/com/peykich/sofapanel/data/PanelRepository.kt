@@ -7,10 +7,13 @@ import android.net.NetworkCapabilities
 import com.peykich.sofapanel.api.ApiError
 import com.peykich.sofapanel.api.ApiParser
 import com.peykich.sofapanel.api.Climate
+import com.peykich.sofapanel.api.Command
 import com.peykich.sofapanel.api.Credentials
 import com.peykich.sofapanel.api.Device
 import com.peykich.sofapanel.api.SwitchBotClient
 import com.peykich.sofapanel.domain.CommandCatalog
+import com.peykich.sofapanel.googletv.GoogleTvException
+import com.peykich.sofapanel.googletv.GoogleTvManager
 import com.peykich.sofapanel.domain.DeviceStep
 import com.peykich.sofapanel.domain.SceneStep
 import com.peykich.sofapanel.domain.Step
@@ -22,6 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
@@ -41,6 +45,7 @@ class PanelRepository(context: Context, private val scope: CoroutineScope) {
     val settingsStore = SettingsStore(app)
     val macroStore = MacroStore(app)
     val backgroundStore = BackgroundStore(app)
+    val googleTv = GoogleTvManager(app, secrets, scope)
     private val cache = ListCache(app)
     private val counterPrefs = app.getSharedPreferences("api_calls", Context.MODE_PRIVATE)
 
@@ -49,6 +54,10 @@ class PanelRepository(context: Context, private val scope: CoroutineScope) {
     val settings: StateFlow<AppSettings> = settingsStore.flow.stateIn(scope, SharingStarted.Eagerly, AppSettings())
     private val _lists = MutableStateFlow(cache.load())
     val lists: StateFlow<CachedLists> = _lists
+
+    /** パネルやマクロで使える機器（SwitchBot の機器 ＋ ペアリング済みの Google TV） */
+    val allDevices: StateFlow<List<Device>> = combine(_lists, googleTv.device) { l, tv -> l.devices + listOfNotNull(tv) }
+        .stateIn(scope, SharingStarted.Eagerly, _lists.value.devices + listOfNotNull(googleTv.device.value))
 
     val climate = MutableStateFlow<Climate?>(null)
     @Volatile
@@ -99,9 +108,18 @@ class PanelRepository(context: Context, private val scope: CoroutineScope) {
     /** マクロの1ステップ（機器操作・シーン実行）を送る。失敗したら例外 */
     suspend fun sendStep(step: Step) {
         when (step) {
-            is DeviceStep -> withRetry { it.command(step.deviceId, step.command) }
+            is DeviceStep -> sendCommand(step.deviceId, step.command)
             is SceneStep -> withRetry { it.executeScene(step.sceneId) }
             else -> Unit
+        }
+    }
+
+    /** 機器にコマンドを送る（Google TV は LAN で直接、それ以外は SwitchBot API） */
+    suspend fun sendCommand(deviceId: String, command: Command) {
+        if (command.commandType == CommandCatalog.GOOGLE_TV_COMMAND) {
+            googleTv.send(command)
+        } else {
+            withRetry { it.command(deviceId, command) }
         }
     }
 
@@ -150,9 +168,11 @@ class PanelRepository(context: Context, private val scope: CoroutineScope) {
     fun reason(e: Throwable, name: String? = null): String {
         val base = when (e) {
             is ApiError -> e.message.orEmpty()
+            is GoogleTvException -> e.message.orEmpty()
             else -> "エラー（${e.javaClass.simpleName}）"
         }
-        val withName = e is ApiError.Status || e is ApiError.Timeout || e is ApiError.Network || e is ApiError.Http
+        val withName = e is ApiError.Status || e is ApiError.Timeout || e is ApiError.Network || e is ApiError.Http ||
+            e is GoogleTvException
         return if (withName && !name.isNullOrBlank()) "$name：$base" else base
     }
 

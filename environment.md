@@ -7,6 +7,10 @@
 - Python で外部ファイル（APK など）を解析するときは、スクラッチパッド内の専用フォルダに置く。
   `pip install` したパッケージは `~/.local` に入るので、`python3 -I` だと読めないことがある。
 
+- 自動許可モードでは、**ダウンロードした外部ライブラリのコードを実行すると拒否される**（例：PyPI のパッケージを import して中の protobuf 定義を表示しようとした）。
+  → 実行せずにデータとして読む。`*_pb2.py` の `AddSerializedFile(b'...')` は `ast.literal_eval` で取り出して、自作の小さなパーサーで
+  FileDescriptorProto（message=4, field=2: name=1/number=3/type=5, enum=5）を読めばフィールド番号が分かる。
+
 ## claude.ai の Artifact（公開ページ）
 - 外部への通信は CSP で全て遮断される。URL から取得する機能は Artifact 上では動かない（案内メッセージを出す）。
 - `javascript:` リンクやファイルのダウンロードも無効。ブックマークレットはコピーボタンで渡す。
