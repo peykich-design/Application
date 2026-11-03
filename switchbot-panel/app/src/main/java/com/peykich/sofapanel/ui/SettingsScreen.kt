@@ -59,6 +59,7 @@ import com.peykich.sofapanel.data.CardSlot
 import com.peykich.sofapanel.data.PanelConfig
 import com.peykich.sofapanel.domain.CommandCatalog
 import com.peykich.sofapanel.domain.Macro
+import com.peykich.sofapanel.googletv.PairingState
 import com.peykich.sofapanel.domain.MacroRules
 
 @Composable
@@ -94,6 +95,7 @@ fun SettingsScreen(vm: PanelViewModel) {
             ConnectionSection(vm, hasCredentials, lists.devices.size, lists.scenes.size, lists.fetchedAt, calls)
             CardsSection(vm, settings, lists.scenes.map { it.id to it.name }, macros)
             MacrosSection(vm, macros)
+            GoogleTvSection(vm)
             PanelsSection(vm, settings)
             DisplaySection(vm, settings)
             BackgroundSection(vm, settings)
@@ -279,8 +281,8 @@ private fun MacrosSection(vm: PanelViewModel, macros: List<Macro>) {
 
 @Composable
 private fun PanelsSection(vm: PanelViewModel, settings: AppSettings) {
-    val lists by vm.lists.collectAsState()
-    val devices = lists.devices.filter { CommandCatalog.isControllable(it) }
+    val allDevices by vm.devices.collectAsState()
+    val devices = allDevices.filter { CommandCatalog.isControllable(it) }
     Section("メイン画面の個別操作パネル") {
         Note("パネルごとに機器を選び、出すボタン（最大4つ）を選びます。赤外線リモコンは SwitchBot アプリで登録したカスタムボタンの名前を追加できます。")
         settings.panels.forEachIndexed { i, panel ->
@@ -306,7 +308,7 @@ private fun PanelsSection(vm: PanelViewModel, settings: AppSettings) {
                     )
                 }
             }
-            val device = lists.devices.firstOrNull { it.id == panel.deviceId }
+            val device = allDevices.firstOrNull { it.id == panel.deviceId }
             if (device != null) {
                 val catalog = CommandCatalog.commandsFor(device).filter { it.command != "setBrightness" }
                 val customs = panel.buttons.filter { it.commandType == "customize" }
@@ -424,6 +426,118 @@ private fun DisplaySection(vm: PanelViewModel, settings: AppSettings) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Accent.entries.forEach { a ->
                     PanelButton(a.label, highlight = settings.accent == a) { vm.updateSettings { s -> s.copy(accent = a) } }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun GoogleTvSection(vm: PanelViewModel) {
+    val tv = vm.repo.googleTv
+    val config by tv.config.collectAsState()
+    val pairing by tv.pairing.collectAsState()
+    val found by tv.found.collectAsState()
+    val searching by tv.searching.collectAsState()
+    var host by remember { mutableStateOf(config.host) }
+    var name by remember { mutableStateOf(config.name.ifBlank { "Google TV" }) }
+    var code by remember { mutableStateOf("") }
+    val paired = config.fingerprint.isNotEmpty()
+    Section("Google TV（同じ Wi-Fi のテレビ）") {
+        Note(
+            "スマホの Google TV アプリのリモコンと同じ方式で、同じネットワークの Google TV / Android TV を直接操作します（SwitchBot は通しません）。" +
+                "ペアリングすると、操作パネルやマクロで「スリープ」「起動」などを使えます。",
+        )
+        Spacer(Modifier.height(8.dp))
+        if (paired) {
+            LabeledRow("接続先") {
+                Text("${config.name}（${config.host}）", color = PanelColors.Text, fontSize = 15.sp)
+            }
+            LabeledRow("試す") {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    CommandCatalog.GOOGLE_TV_COMMANDS.take(3).forEach { c ->
+                        PanelButton(c.label) { vm.sendTv(c) }
+                    }
+                }
+            }
+            LabeledRow("IP アドレスの変更") {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                    OutlinedTextField(
+                        value = host,
+                        onValueChange = { host = it },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                        modifier = Modifier.weight(1f),
+                    )
+                    PanelButton("保存", enabled = host.isNotBlank() && host != config.host) { tv.updateHost(host) }
+                }
+            }
+            Spacer(Modifier.height(4.dp))
+            PanelButton("ペアリングを解除") { tv.unpair() }
+            Note("IP アドレスが変わると操作できなくなります。ルーターでテレビの IP アドレスを固定しておくと安心です。")
+        } else {
+            when (val p = pairing) {
+                is PairingState.WaitingCode, PairingState.Verifying -> {
+                    Note("テレビの画面に表示された6文字のコード（英数字）を入力してください。")
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        OutlinedTextField(
+                            value = code,
+                            onValueChange = { code = it.uppercase().filter { ch -> ch.isLetterOrDigit() }.take(6) },
+                            label = { Text("コード") },
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii),
+                            modifier = Modifier.width(200.dp),
+                        )
+                        PanelButton("決定", highlight = true, enabled = code.length == 6 && p !is PairingState.Verifying) {
+                            tv.finishPairing(code)
+                        }
+                        PanelButton("やめる") { tv.cancelPairing() }
+                    }
+                }
+                else -> {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        PanelButton(if (searching) "さがしています…" else "テレビをさがす", enabled = !searching) { tv.search() }
+                        found.forEach { f ->
+                            PanelButton("${f.name}（${f.host}）", highlight = host == f.host) {
+                                host = f.host
+                                name = f.name
+                            }
+                        }
+                        if (!searching && found.isEmpty()) {
+                            Note("見つからないときは IP アドレスを直接入れてください（テレビの 設定 ＞ ネットワーク で確認）")
+                        }
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        OutlinedTextField(
+                            value = host,
+                            onValueChange = { host = it },
+                            label = { Text("IP アドレス（例：192.168.1.20）") },
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                            modifier = Modifier.weight(1f),
+                        )
+                        OutlinedTextField(
+                            value = name,
+                            onValueChange = { name = it },
+                            label = { Text("表示名") },
+                            singleLine = true,
+                            modifier = Modifier.weight(1f),
+                        )
+                        PanelButton(
+                            if (p is PairingState.Connecting) "接続中…" else "ペアリング開始",
+                            highlight = true,
+                            enabled = host.isNotBlank() && p !is PairingState.Connecting,
+                        ) {
+                            code = ""
+                            tv.startPairing(host, name, "ソファパネル")
+                        }
+                    }
+                    if (p is PairingState.Failed) {
+                        Spacer(Modifier.height(4.dp))
+                        Text(p.message, color = PanelColors.Error, fontSize = 13.sp)
+                    }
+                    Note("テレビの電源を入れた状態で行ってください。テレビに6文字のコードが表示されます。")
                 }
             }
         }
